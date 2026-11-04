@@ -1,14 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// HERO · "Scouting Card"
-// Foto + número a la IZQUIERDA, ficha a la DERECHA, ambas columnas
-// juntas y centradas. Paleta blanco y negro (escudo de Riestra);
-// el verde queda solo en detalles.
-// Ficha pensada para scouts/clubes europeos: club + categoría,
-// nombre, datos físicos clave, PASAPORTE COMUNITARIO destacado y
-// CTAs a videos / contacto. Animación CINEMATOGRÁFICA con un
-// timeline GSAP (telón, número, fotos, letras, contadores) y
-// parallax con scrub mientras el hero está sticky.
-// ─────────────────────────────────────────────────────────────
 import { useRef, useEffect } from 'react'
 import { Box, Text, Flex, Image, HStack, Grid } from '@chakra-ui/react'
 import { gsap } from 'gsap'
@@ -128,12 +117,7 @@ export default function Hero() {
           perspective: '800px',
         }}
       >
-        {/* Luz neutra detrás del arquero */}
-        <Box position="absolute" inset={0} pointerEvents="none"
-          bg={{
-            base: 'radial-gradient(80% 50% at 35% 30%, rgba(255,255,255,0.10) 0%, transparent 70%)',
-            lg: 'radial-gradient(32% 62% at 38% 46%, rgba(255,255,255,0.10) 0%, transparent 72%)',
-          }} />
+      
         {/* Fotos de fondo (B/N difuminadas) */}
         <Image className="hc-bg hc-bg-0" src={playerData.heroBg1} alt="" aria-hidden draggable={false}
           position="absolute" zIndex={1} objectFit="contain" opacity={0}
@@ -141,24 +125,24 @@ export default function Hero() {
           filter="grayscale(1) contrast(1.2) brightness(0.9) blur(0.5px)" />
         <Image className="hc-bg hc-bg-1" src={playerData.heroBg} alt="" aria-hidden draggable={false}
           position="absolute" zIndex={1} objectFit="contain" opacity={0}
-          right={{ base: '-34%', md: '-10%', lg: '-4%' }} bottom={{ base: '46%', md: '42%', lg: '-6%' }} h={{ base: '28vh', md: '38vh', lg: '68vh' }}
+          right={{ base: '-34%', md: '-10%', lg: '4%' }} bottom={{ base: '46%', md: '42%', lg: '-6%' }} h={{ base: '28vh', md: '38vh', lg: '68vh' }}
           filter="grayscale(1) contrast(1.2) brightness(0.9) blur(1px)" />
 
         {/* Composición centrada: foto + número | ficha */}
         <Flex position="absolute" inset={0} justify="center" zIndex={3}>
           <Flex w={{ base: '100%', lg: 'auto' }} h="100%"
-            align={{ lg: 'stretch' }} gap={{ lg: '24px' }}>
+            align={{ lg: 'stretch' }} >
 
             {/* IZQUIERDA — número + foto principal */}
             <Box position={{ base: 'absolute', lg: 'relative' }} inset={{ base: 0, lg: 'auto' }}
               w={{ lg: 'min(36vw, 500px)' }} flexShrink={0} h="100%" pointerEvents="none">
               <Box position="absolute" zIndex={0}
-                left={{ base: '50%', lg: '50%' }} top={{ base: '9%', lg: '6%' }}
+                left={{ base: '50%', lg: '45%' }} top={{ base: '9%', lg: '10%' }}
                 transform={{ base: 'translateX(-20%)', lg: 'translateX(-88%)' }}>
                 <Box className="hc-number-wrap">
                   <Text className="hc-number" fontFamily="heading" lineHeight={0.8} color="transparent" opacity={0}
                     fontSize={{ base: '44vh', md: '52vh', lg: '90vh' }}
-                    sx={{ WebkitTextStroke: '1.5px rgba(255,255,255,0.3)' }}>
+                    sx={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.43)' }}>
                     {playerData.number}
                   </Text>
                 </Box>
@@ -205,8 +189,8 @@ export default function Hero() {
 
                 <Box>
                   <HStack className="hc-meta" spacing={3} opacity={0} mb={{ base: 1, lg: 2 }}>
-                    <Box w="28px" h="2px" bg="brand.green" />
-                    <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }} color="brand.white"
+                    
+                    <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }} color="brand.green"
                       letterSpacing="widest" textTransform="uppercase">
                       {playerData.position} · Clase {playerData.category}
                     </Text>
@@ -252,7 +236,7 @@ export default function Hero() {
                   </HStack>
                   <Text fontFamily="mono" fontWeight="700" fontSize={{ base: '10px', lg: 'xs' }}
                     letterSpacing="widest" textTransform="uppercase">
-                    Pasaporte comunitario <Box as="span" color="brand.greenBright">· UE</Box>
+                    Argentino - Polaco <Box as="span" color="brand.greenBright">· UE</Box>
                   </Text>
                 </HStack>
 
