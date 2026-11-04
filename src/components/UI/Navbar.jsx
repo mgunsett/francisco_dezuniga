@@ -157,10 +157,10 @@ export default function Navbar() {
           fontWeight="600"
           letterSpacing="wider"
           textTransform="uppercase"
-          color="brand.gray2"
+          color="brand.dark"
           cursor="pointer"
           transition="all 0.2s"
-          _hover={{ bg: 'brand.brown', color: 'white' }}
+          _hover={{ bg: 'brand.brown', color: 'brand.dark' }}
         >
           Contacto
         </Box>

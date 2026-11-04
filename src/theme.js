@@ -1,27 +1,41 @@
 import { extendTheme } from '@chakra-ui/react'
 
 // Paleta de marca — fuente única de verdad para los colores del proyecto
+// Base blanco y negro del escudo de Deportivo Riestra; el verde del buzo
+// de arquero queda solo para detalles.
+const riestra = {
+  black:       '#0A0B0A', // negro (fondo)
+  white:       '#FFFFFF', // blanco (texto / acento principal)
+  green:       '#1F7A46', // verde del buzo
+  greenBright: '#34B86E', // verde de detalle (legible sobre negro)
+  greenDeep:   '#0D3A22', // verde profundo
+  smoke:       '#8E918F', // gris neutro (texto secundario)
+}
+
+// Mantiene las keys del template para que todas las secciones se re-pinten solas
 const brand = {
-  brown:      '#141516', // azul principal
-  brownDark:  '#0B2A4A', // azul profundo
-  brownLight: '#4D93D6', // azul claro
-  amber:      '#bda78e', // detalle rojizo/dorado
-  amber2:     '#993f3f8e',
-  amberDark:  '#7A1F1F', // detalle rojizo/dorado oscuro
-  amberLight: '#bda78e4f', // detalle rojizo/dorado claro
-  dorado:     '#c0ab32', // dorado
-  orange:     '#a36b2c', // naranja (hover de botones)
-  orangeDark: '#7a4e1f', // naranja oscuro (hover de botones)
-  orangeLight:'#c08b4a', // naranja claro (hover de botones)
-  dark:       '#2324249f',//'#532626', // azul casi negro (fondo)
-  dark3:      '#232424a1',
-  dark2:      '#a5a4a4',
-  gray:       '#7A8CA3', // azul grisáceo (texto secundario)
-  gray2:      '#884545',
-  bone:       '#FFFFFF', // blanco (texto principal)
-  boneWarm:   '#3083e2', // blanco azulado (detalles)
-  rec:        '#E5484D', // rojo del indicador REC
-  bgRef:      '#bda78e1a'// bg de hover en cajas
+  brown:      riestra.greenBright,          // detalles finos (barritas, hovers)
+  brownDark:  riestra.greenDeep,
+  brownLight: riestra.greenBright,
+  amber:      riestra.white,                // acento principal
+  amber2:     'rgba(255,255,255,0.55)',
+  amberDark:  '#D9DCDA',
+  amberLight: 'rgba(255,255,255,0.28)',
+  dorado:     '#c0ab32',
+  orange:     '#a36b2c',
+  orangeDark: '#7a4e1f',
+  orangeLight:'#c08b4a',
+  dark:       riestra.black,                // fondo
+  dark3:      'rgba(10,11,10,0.62)',        // fondo translúcido (navbar)
+  dark2:      '#B9BFBB',
+  gray:       riestra.smoke,                // texto secundario
+  gray2:      '#C9CCCA',
+  bone:       riestra.white,                // texto principal
+  boneWarm:   '#E9ECEA',
+  rec:        '#E5484D',                    // rojo del indicador REC
+  bgRef:      'rgba(255,255,255,0.06)',     // bg de hover en cajas
+  accent:     riestra.greenBright,          // scrollbar
+  ...riestra,
 }
 
 // Colores de la firma del desarrollador (crédito en el footer)

@@ -4,6 +4,11 @@ import { IoMdStats } from 'react-icons/io'
 
 //Hero
 import polaco1 from '@assets/polaco1.webp'
+import fotoHero from '@assets/foto_hero1.webp'
+import fotoHeroBg from '@assets/foto_herobg.webp'
+import fotoHeroBg1 from '@assets/foto_herobg1.webp'
+import escudoRiestra from '@assets/escudo_riestra.webp'
+import polonia from '@assets/polonia.svg'
 
 import argentina from '@assets/argentina.webp'
 import universitario from '@assets/escudo_univ.webp'
@@ -38,29 +43,37 @@ import ledsports from '@assets/contact3.webp'
 import moon from '@assets/contact4.webp'
 
 
-const name = 'LISANDRO'
-const fullName = 'ALZUGARAY'
+const name = 'FRANCISCO'
+const fullName = 'DE ZÚÑIGA'
 
 export const playerData = {
   name,
   fullName,
-  initials: `${name[0]}${fullName[0]}`, // iniciales para logos (PF)
-  displayName: `${name} ${fullName}`,   // nombre completo para textos legales / alt
-  number: 30,
-  position: 'Mediocampista',
-  positionShort: 'MID',
+  initials: 'FZ', // iniciales para logos
+  displayName: 'Francisco de Zúñiga',   // nombre completo para textos legales / alt
+  number: 1,
+  position: 'Arquero',
+  positionShort: 'GK',
   nationality: 'Argentina',
   nationalityFlag: argentina,
-  age: 36,
-  height: '1.76m',
-  weight: '70kg',
-  foot: 'Derecho',
-  birthDate: '17 / 04 / 1990',
-  birthPlace: 'Viale, Argentina',
-  currentClub: 'Universitario',
-  logoCurrentClub: universitario,
-  image: polaco1,
-  
+  // Pasaporte comunitario: dato clave para clubes europeos
+  secondNationality: 'Polonia',
+  secondNationalityFlag: polonia,
+  euPassport: true,
+  age: 18,
+  category: 2008,
+  height: '1.85m',
+  weight: '77kg',
+  foot: 'Izquierdo',
+  hand: 'Derecha',
+  birthDate: '20 / 03 / 2008',
+  birthPlace: 'Buenos Aires, Argentina',
+  currentClub: 'Deportivo Riestra',
+  currentDivision: 'Primera División · Liga Profesional AFA',
+  logoCurrentClub: escudoRiestra,
+  image: fotoHero,
+  heroBg: fotoHeroBg,
+  heroBg1: fotoHeroBg1,
 
   stats: [
     { label: 'Velocidad',      value: 91 },
