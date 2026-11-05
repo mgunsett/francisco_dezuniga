@@ -1,9 +1,7 @@
-import { FaInstagram, FaEnvelope } from 'react-icons/fa'
-import { FaXTwitter } from 'react-icons/fa6'
+import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
 import { IoMdStats } from 'react-icons/io'
 
 //Hero
-import polaco1 from '@assets/polaco1.webp'
 import fotoHero from '@assets/foto_hero1.webp'
 import fotoHeroBg from '@assets/foto_herobg.webp'
 import fotoHeroBg1 from '@assets/foto_herobg1.webp'
@@ -18,18 +16,7 @@ import highlightsPoster from '@assets/highlights_poster.webp'
 import listaBuenaFe from '@assets/docs/lista_buena_fe_sudamericana.webp'
 
 import argentina from '@assets/argentina.webp'
-import universitario from '@assets/escudo_univ.webp'
-//Escudos trayectoria
-import escudoAtlParana from '@assets/escudos/escudo_atlparana.webp'
-import escudoNewells from '@assets/escudos/escudo_newells.webp'
-import escudoAlhali from '@assets/escudos/escudo_alhali.webp'
-import escudoCentralCordoba from '@assets/escudos/escudo_centralcordoba.webp'
-import escudoChaco from '@assets/escudos/escudo_chaco.webp'
-import escudoLigadequito from '@assets/escudos/escudo_ligadequito.webp'
-import escudoSanjose from '@assets/escudos/escudo_sanjose.webp'
-import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
-import escudoAucas from '@assets/escudos/escudo_aucas.webp'
-//Gallery
+//Galería
 import fz01 from '@assets/gallery/fz01.webp'
 import fz02 from '@assets/gallery/fz02.webp'
 import fz03 from '@assets/gallery/fz03.webp'
@@ -45,17 +32,8 @@ import fz12 from '@assets/gallery/fz12.webp'
 import fz13 from '@assets/gallery/fz13.webp'
 import fz14 from '@assets/gallery/fz14.webp'
 import fz15 from '@assets/gallery/fz15.webp'
-//Video
-import photoGraph from '@assets/perfil_video.webp'
-//Prensa
-import logo1 from '@assets/logos/logo1.webp'
-import logo2 from '@assets/logos/logo2.webp'
-import logo3 from '@assets/logos/logo3.webp'
 //Redes
 import transfermkt from '@assets/contact2.svg'
-import ledsports from '@assets/contact3.webp'
-import moon from '@assets/contact4.webp'
-
 
 const name = 'FRANCISCO'
 const fullName = 'DE ZÚÑIGA'
@@ -196,30 +174,6 @@ export const playerData = {
     { id: 'v3', instagramId: 'DXAqEJQES9Q', instagramType: 'reel', title: 'Entrada en Calor',               fullTitle: 'Francisco de Zúñiga | Entrada en Calor',               category: 'Previa',        cover: fotoHeroBg1 },
   ],
 
-  press: [
-    {
-      media: 'ESPN Deportes',
-      logo:  logo1,
-      title: 'Lisandro Alzugaray volvió con gol clave para Universitario en CONMEBOL Libertadores',
-      date:  'Abril 2026',
-      url:   'https://espndeportes.espn.com/futbol/copa-libertadores/nota/_/id/16648033/lisandro-alzugaray-volvio-con-gol-clave-para-universitario-en-conmebol-libertadores',
-    },
-    {
-      media: 'CONMEBOL Libertadores',
-      logo:  logo3,
-      title: '🔥⚽🇵🇪 Un delantero siempre presente en la CONMEBOL #Libertadores: @lisandroalzugaray',
-      date:  'Mayo 2026',
-      url:   'https://www.instagram.com/p/DYSwt6NDBIC/?hl=es&img_index=4',
-    },
-    {
-      media: 'CONMEBOL Libertadores',
-      logo:  logo3,
-      title: '¡El equipo de la semana! Lisandro Alzugaray en el 11 ideal tras la semifinal de ida de la CONMEBOL #Libertadores.',
-      date:  'Octubre 2025',
-      url:   'https://x.com/Libertadores/status/1981820492257669422/photo/1?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1981820492257669422%7Ctwgr%5E81681f2548c9342a151787ad10c31eabb903f3c2%7Ctwcon%5Es1_&ref_url=https%3A%2F%2Fwww.teleamazonas.com%2Fdeportes%2Ffutbol%2Flibertadores%2Fseis-futbolistas-liga-quito-equipo-ideal-semana-copa-libertadores-105112%2F',
-    },
-  ],
-
   gallery: [
     { id: 1, src: fz01, alt: 'Francisco de Zúñiga · Antes del partido', caption: 'Antes del partido', category: 'Previa', aspect: 'tall' },
     { id: 2, src: fz02, alt: 'Francisco de Zúñiga · Concentración', caption: 'Concentración', category: 'Partido', aspect: 'tall' },
@@ -238,42 +192,42 @@ export const playerData = {
     { id: 15, src: fz15, alt: 'Francisco de Zúñiga · El 1', caption: 'El 1', category: 'Partido', aspect: 'tall' },
   ],
 
+  // Redes (url: null = se muestra como pendiente)
   socialMedia: [
-    {
-      label: 'Instagram',
-      icon: FaInstagram,
-      iconBg: FaInstagram,
-      handle: '@lisandroalzugaray',
-      url: 'https://www.instagram.com/lisandroalzugaray/',
-      hoverColor: '#E1306C',
-      hoverGradient: 'insta-gradient',
-    },
-    {
-      label: 'TransferMarkt',
-      image: transfermkt,
-      iconBg: IoMdStats,
-      handle: '@lisandro-alzugaray',
-      url: 'https://www.transfermarkt.com.ar/lisandro-alzugaray/profil/spieler/396920',
-      hoverColor: 'brand.brownLight',
-    },
+    { label: 'Instagram',     icon: FaInstagram, handle: '@frandezuniga', url: 'https://www.instagram.com/frandezuniga/' },
+    { label: 'Transfermarkt', icon: IoMdStats, image: transfermkt, handle: 'Francisco de Zúñiga', url: 'https://www.transfermarkt.com.ar/francisco-de-zuniga/profil/spieler/1512045' },
   ],
 
-  contact: [
-    {
-      title:      'Representante Deportivo',
-      label:      'Moon Sports Group',
-      image:       moon,
-      handle:     '@moonsportsgroup_',
-      url:        'https://www.instagram.com/moonsportsgroup_/',
-      hoverColor: 'rgba(139,69,19,0.18)',
+  // Contacto (dirección y datos de la madre NO se publican, a pedido)
+  contact: {
+    // Los mensajes del formulario llegan a este email (vía FormSubmit)
+    formEmail: 'mdzuniga30@gmail.com',
+    people: [
+      {
+        role: 'Jugador',
+        name: 'Francisco de Zúñiga',
+        phone: '+54 9 11 4528-1499',
+        whatsapp: '5491145281499',
+        email: 'franciscodezuniga0@gmail.com',
+      },
+      {
+        role: 'Padre · Contacto familiar',
+        name: 'Martín de Zúñiga',
+        phone: '+54 9 11 6180-6966',
+        whatsapp: '5491161806966',
+        email: 'mdzuniga30@gmail.com',
+      },
+    ],
+    // Mensaje para scouts y clubes de Europa (del CV: "Intereses profesionales")
+    availability: {
+      title: 'Disponible para pruebas en Europa',
+      text: 'Interesado en continuar su desarrollo profesional en Europa. Pasaporte comunitario (Polonia) y nacionalidad española en trámite.',
+      languages: [
+        { code: 'ES', label: 'Español', level: 'Nativo' },
+        { code: 'EN', label: 'Inglés', level: 'Avanzado' },
+        { code: 'FR', label: 'Francés', level: 'Intermedio' },
+        { code: 'IT', label: 'Italiano', level: 'Intermedio' },
+      ],
     },
-    {
-      title:      'Contacto Marketing',
-      label:      'led sports marketing',
-      image: ledsports,
-      handle:     '@_ledsports',
-      url:        'https://www.instagram.com/_ledsports/',
-      hoverColor: 'rgba(212,168,75,0.18)',
-    },
-  ],
+  },
 }

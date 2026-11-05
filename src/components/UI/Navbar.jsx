@@ -11,7 +11,6 @@ const navLinks = [
   { label: 'Estadísticas', href: '#estadisticas' },
   { label: 'Videos',       href: '#videos' },
   { label: 'Galería',      href: '#galeria' },
-  { label: 'Prensa',       href: '#prensa' },
 ]
 
 const mobileLinks = [
