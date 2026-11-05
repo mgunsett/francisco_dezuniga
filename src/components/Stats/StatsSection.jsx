@@ -5,6 +5,7 @@ import {
   SectionShell, BlockTitle, Eyebrow, overallOf,
   BuenaFeImage, BuenaFeLens, BuenaFeLightbox, buenaFeBox,
 } from './statsShared'
+import { useT } from '../../i18n'
 
 const MotionBox = motion(Box)
 const ease = [0.16, 1, 0.3, 1]
@@ -12,6 +13,7 @@ const inView = { initial: 'hidden', whileInView: 'show', viewport: { once: true,
 
 // Foto del jugador 
 function PlayerRating({ value }) {
+  const t = useT()
   return (
     <MotionBox position="relative" flexShrink={0} w={{ base: '100%', md: '270px', lg: '300px' }}
       h={{ base: '420px', md: '500px', lg: '540px' }}
@@ -22,7 +24,7 @@ function PlayerRating({ value }) {
         bg="linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(52,184,110,0.10))">
         <Box position="absolute" inset="8px" border="1px solid" borderColor="whiteAlpha.200" borderRadius="10px 10px 52px 52px" />
       </Box>
-      <Image src={playerData.statsImage} alt={`${playerData.displayName}, arquero de Deportivo Riestra`}
+      <Image src={playerData.statsImage} alt={`${playerData.displayName}, ${t('arquero de {club}', { club: playerData.currentClub })}`}
         position="absolute" bottom={0} left="50%" transform="translateX(-50%)" h="100%" w="auto" maxW="none"
         objectFit="contain" loading="lazy" draggable={false}
         sx={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }} />
@@ -32,7 +34,7 @@ function PlayerRating({ value }) {
         boxShadow="0 14px 36px rgba(0,0,0,0.55)"
         {...inView} variants={{ hidden: { opacity: 0, scale: 0.6 }, show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease, delay: 0.6 } } }}>
         <Text fontFamily="heading" fontSize={{ base: '44px', lg: '52px' }} lineHeight={0.9}>{value}</Text>
-        <Text fontFamily="mono" fontSize="9px" fontWeight="700" letterSpacing="0.2em" textTransform="uppercase">Valoración</Text>
+        <Text fontFamily="mono" fontSize="9px" fontWeight="700" letterSpacing="0.2em" textTransform="uppercase">{t('Valoración')}</Text>
         <Box h="2px" bg="brand.greenBright" mt={1.5} />
       </MotionBox>
     </MotionBox>
@@ -40,13 +42,14 @@ function PlayerRating({ value }) {
 }
 
 function SegmentBar({ label, value, index }) {
+  const t = useT()
   const score = value / 10
   return (
     <MotionBox {...inView}
       variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05, delayChildren: index * 0.08 } } }}>
       <Flex justify="space-between" align="baseline" mb={2}>
         <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }} letterSpacing="wider" textTransform="uppercase">
-          {label}
+          {t(label)}
         </Text>
         <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1} sx={{ fontVariantNumeric: 'tabular-nums' }}>
           {score.toFixed(1)}<Box as="span" fontSize="sm" color="brand.gray"> / 10</Box>
@@ -69,6 +72,7 @@ function SegmentBar({ label, value, index }) {
 }
 
 function TimelineItem({ item, side }) {
+  const t = useT()
   const isClub = item.kind === 'club'
   return (
     <MotionBox {...inView}
@@ -79,7 +83,7 @@ function TimelineItem({ item, side }) {
         {item.logo ? (
           <Flex boxSize="56px" flexShrink={0} borderRadius="full" overflow="hidden" align="center" justify="center"
             bg={isClub ? 'transparent' : 'transparent'} border="1px solid" borderColor={isClub ? 'transparent' : 'whiteAlpha.400'}>
-            <Image src={item.logo} alt={`Logo de ${item.name}`} objectFit={isClub ? 'contain' : 'cover'}
+            <Image src={item.logo} alt={`${t('Logo de')} ${item.name}`} objectFit={isClub ? 'contain' : 'cover'}
               boxSize={isClub ? '50px' : '100%'} loading="lazy" />
           </Flex>
         ) : (
@@ -91,14 +95,14 @@ function TimelineItem({ item, side }) {
         <Box minW={0}>
           <Text fontFamily="mono" fontSize="10px" letterSpacing="0.2em" textTransform="uppercase"
             color={item.current ? 'brand.greenBright' : 'brand.gray'}>
-            {item.years} {isClub ? '' : ' · Formación'}
+            {t(item.years)} {isClub ? '' : ` · ${t('Formación')}`}
           </Text>
-          <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '3xl' }} lineHeight={1}>{item.name}</Text>
+          <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '3xl' }} lineHeight={1}>{t(item.name)}</Text>
         </Box>
       </Flex>
       <VStack align={{ base: 'flex-start', lg: side === 'left' ? 'flex-end' : 'flex-start' }} spacing={1} mt={3}>
         {item.lines.map((l) => (
-          <Text key={l} fontFamily="mono" fontSize="xs" color="brand.gray2">{l}</Text>
+          <Text key={l} fontFamily="mono" fontSize="xs" color="brand.gray2">{t(l)}</Text>
         ))}
       </VStack>
     </MotionBox>
@@ -106,13 +110,14 @@ function TimelineItem({ item, side }) {
 }
 
 function CareerTimeline() {
+  const t = useT()
   const clubs = playerData.clubs.map((c, i) => ({
     kind: 'club', name: c.name, years: c.years, logo: c.logo, current: i === 0,
     lines: [].concat(c.info).filter(Boolean), sort: c.to * 10 + c.from / 1000,
   }))
   const academies = playerData.academies.map((a) => ({
     kind: 'academy', name: a.name, short: a.short, years: a.years, logo: a.logo,
-    lines: [`Referencias: ${a.reference}`], sort: a.to * 10 + a.from / 1000,
+    lines: [`${t('Referencias')}: ${a.reference.replace(' y ', ` ${t('y')} `)}`], sort: a.to * 10 + a.from / 1000,
   }))
   const coaches = playerData.coaches
 
@@ -135,9 +140,9 @@ function CareerTimeline() {
               {coaches.map((c) => (
                 <Box key={c.names}>
                   <Text fontFamily="mono" fontWeight="700" fontSize="md" letterSpacing="0.1em" textTransform="uppercase">
-                    <Box as="span" color="brand.greenBright">{c.year}</Box> · {c.names}
+                    <Box as="span" color="brand.greenBright">{c.year}</Box> · {c.names.replace(' y ', ` ${t('y')} `)}
                   </Text>
-                  <Text fontFamily="mono" fontSize="xs" color="brand.gray">{c.role}</Text>
+                  <Text fontFamily="mono" fontSize="xs" color="brand.gray">{t(c.role)}</Text>
                 </Box>
               ))}
             </VStack>
@@ -157,6 +162,7 @@ function CareerTimeline() {
 
 // Documento: la lista buena Fe
 function BuenaFeDossier() {
+  const t = useT()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const bf = playerData.buenaFe
   const b = buenaFeBox()
@@ -166,7 +172,7 @@ function BuenaFeDossier() {
         <BlockTitle eyebrow="Documento oficial" title="Lista de buena fe" mb={{ base: 4, lg: 5 }} />
         <MotionBox {...inView} variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } } }}>
           <Text fontFamily="mono" fontSize={{ base: 'sm', lg: 'md' }} color="brand.gray2" maxW="520px" lineHeight={1.7}>
-            Inscripto por Deportivo Riestra en la lista de buena fe para la{' '}
+            {t('Inscripto por {club} en la lista de buena fe para la', { club: bf.club })}{' '}
             <Box as="span" color="brand.white" fontWeight="700">{bf.competition}</Box>
           </Text>
         </MotionBox>
@@ -186,7 +192,7 @@ function BuenaFeDossier() {
         <Button onClick={onOpen} mt={{ base: 6, lg: 8 }} bg="brand.white" color="brand.dark" borderRadius="xl"
           fontFamily="mono" fontSize="xs" letterSpacing="0.2em" textTransform="uppercase" px={6}
           _hover={{ bg: 'brand.greenBright' }}>
-          Ver documento
+          {t('Ver documento')}
         </Button>
       </Box>
 
@@ -211,7 +217,7 @@ function BuenaFeDossier() {
           boxSize={{ base: '96px', lg: '118px' }} borderRadius="full" border="2px solid" borderColor="brand.greenBright"
           bg="brand.dark" display="flex" flexDirection="column" alignItems="center" justifyContent="center"
           {...inView} variants={{ hidden: { opacity: 0, scale: 1.6, rotate: -30 }, show: { opacity: 1, scale: 1, rotate: -12, transition: { duration: 0.5, ease, delay: 1.3 } } }}>
-          <Text fontFamily="mono" fontSize="8px" fontWeight="700" letterSpacing="0.22em" color="brand.greenBright">CONVOCADO</Text>
+          <Text fontFamily="mono" fontSize="8px" fontWeight="700" letterSpacing="0.22em" color="brand.greenBright" textTransform="uppercase">{t('Convocado')}</Text>
           <Text fontFamily="heading" fontSize={{ base: '34px', lg: '42px' }} lineHeight={1}>#{bf.dorsal}</Text>
           <Text fontFamily="mono" fontSize="8px" fontWeight="700" letterSpacing="0.22em" color="brand.greenBright">2026</Text>
         </MotionBox>
@@ -222,6 +228,7 @@ function BuenaFeDossier() {
 }
 
 export default function StatsSection() {
+  const t = useT()
   const overall = overallOf(playerData.stats)
   return (
     <SectionShell>
@@ -235,7 +242,7 @@ export default function StatsSection() {
               {playerData.profile.map((p) => (
                 <Box key={p.label} borderTop="1px solid" borderColor="whiteAlpha.200" pt={2} minW={0}>
                   <Eyebrow fontSize="9px" letterSpacing="0.16em">{p.label}</Eyebrow>
-                  <Text fontFamily="mono" fontWeight="600" fontSize={{ base: 'sm', lg: 'md' }}>{p.value}</Text>
+                  <Text fontFamily="mono" fontWeight="600" fontSize={{ base: 'sm', lg: 'md' }}>{t(p.value)}</Text>
                 </Box>
               ))}
             </Grid>
@@ -261,7 +268,7 @@ export default function StatsSection() {
             variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease, delay: i * 0.08 } } }}
             borderTop="2px solid" borderColor={i === 0 ? 'brand.greenBright' : 'brand.white'} pt={4} pr={4}>
             <Text fontFamily="heading" fontSize="lg" color="brand.gray">{m.year}</Text>
-            <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '2xl' }} lineHeight={1.05}>{m.title}</Text>
+            <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '2xl' }} lineHeight={1.05}>{t(m.title)}</Text>
             
           </MotionBox>
         ))}

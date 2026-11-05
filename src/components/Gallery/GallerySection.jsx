@@ -10,11 +10,13 @@ import { AnimatePresence, LayoutGroup, motion } from 'framer-motion'
 import { FiMaximize2 } from 'react-icons/fi'
 import { playerData } from '../../data/playerData'
 import { Eyebrow, Lightbox, pad } from './galleryShared'
+import { useT } from '../../i18n'
 
 const MotionBox = motion(Box)
 const ease = [0.16, 1, 0.3, 1]
 
 export default function GallerySection() {
+  const t = useT()
   const all = playerData.gallery
   const cats = useMemo(() => ['Todas', ...Array.from(new Set(all.map((p) => p.category)))], [all])
   const [cat, setCat] = useState('Todas')
@@ -30,9 +32,9 @@ export default function GallerySection() {
           <Flex justify="space-between" align="flex-end" wrap="wrap" gap={4} mb={{ base: 6, lg: 8 }}>
             <Box>
               <Eyebrow color="brand.bone">Fotos</Eyebrow>
-              <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>Galería</Text>
+              <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>{t('Galería')}</Text>
             </Box>
-            <Text fontFamily="mono" fontSize="sm" color="brand.gray" letterSpacing="wider">{pad(photos.length)} fotos</Text>
+            <Text fontFamily="mono" fontSize="sm" color="brand.gray" letterSpacing="wider">{t('{n} fotos', { n: pad(photos.length) })}</Text>
           </Flex>
 
           {/* Filtros */}
@@ -48,7 +50,7 @@ export default function GallerySection() {
                     {on && <MotionBox layoutId="gal-pill" position="absolute" inset={0} borderRadius="full" bg="brand.white"
                       transition={{ type: 'spring', stiffness: 400, damping: 34 }} />}
                     <Text position="relative" fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.18em" textTransform="uppercase">
-                      {c} <Box as="span" opacity={0.5}>{count(c)}</Box>
+                      {t(c)} <Box as="span" opacity={0.5}>{count(c)}</Box>
                     </Text>
                   </Box>
                 )
@@ -66,7 +68,7 @@ export default function GallerySection() {
                 initial={{ opacity: 0, y: 30, scale: 0.96 }} animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }} transition={{ duration: 0.55, ease, delay: Math.min(i, 8) * 0.04 }}
                 onClick={() => setOpen(photos.indexOf(p))}>
-                <Image src={p.src} alt={p.alt} w="100%" display="block" loading="lazy" draggable={false}
+                <Image src={p.src} alt={`${playerData.displayName} · ${t(p.caption)}`} w="100%" display="block" loading="lazy" draggable={false}
                   transition="transform 0.8s cubic-bezier(0.22,1,0.36,1), filter 0.5s" filter="grayscale(0.15)"
                   _groupHover={{ transform: 'scale(1.05)', filter: 'none' }} />
                 <Box position="absolute" inset={0} bg="linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%)"
@@ -75,7 +77,7 @@ export default function GallerySection() {
                   transform={{ base: 'none', lg: 'translateY(10px)' }} _groupHover={{ opacity: 1, transform: 'none' }}
                   transition="all 0.4s cubic-bezier(0.22,1,0.36,1)">
                   <Eyebrow color="brand.greenBright" fontSize="9px">{p.category}</Eyebrow>
-                  <Text fontFamily="heading" fontSize={{ base: 'md', lg: 'xl' }} lineHeight={1}>{p.caption}</Text>
+                  <Text fontFamily="heading" fontSize={{ base: 'md', lg: 'xl' }} lineHeight={1}>{t(p.caption)}</Text>
                 </Box>
                 <Flex position="absolute" top={3} right={3} boxSize="32px" borderRadius="full" bg="rgba(0,0,0,0.5)"
                   border="1px solid" borderColor="whiteAlpha.400" align="center" justify="center" opacity={0}

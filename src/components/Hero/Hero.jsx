@@ -6,6 +6,7 @@ import MatchBox from './MatchBox'
 import { HeroNumber } from './HeroNumber'
 import { playerData } from '../../data/playerData'
 import useMatches from '../../hooks/useMatches'
+import { useT } from '../../i18n'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -37,6 +38,7 @@ const stats = [
 ]
 
 export default function Hero() {
+  const t = useT()
   const outerRef = useRef(null)
   const stageRef = useRef(null)
   const { matches } = useMatches()
@@ -185,7 +187,7 @@ export default function Hero() {
                 <Flex direction="column" gap={{ base: 'clamp(10px, 1.6vh, 16px)', lg: u(2.2) }} flex={1} minW={0}>
 
                 <HStack className="hc-meta" spacing={{ base: 3, lg: u(1.32) }} opacity={0}>
-                  <Image src={playerData.logoCurrentClub} alt="Escudo Deportivo Riestra" h={{ base: '32px', lg: u(5.5) }} />
+                  <Image src={playerData.logoCurrentClub} alt={t('Escudo de {club}', { club: playerData.currentClub })} h={{ base: '32px', lg: u(5.5) }} />
                   <Box>
                     <Text fontFamily="heading" fontSize={{ base: 'lg', lg: u(2.65) }} letterSpacing="wider" lineHeight={1}>
                       {playerData.currentClub}
@@ -199,7 +201,7 @@ export default function Hero() {
                     
                     <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: u(1.55) }} color="brand.green"
                       letterSpacing="widest" textTransform="uppercase">
-                      {playerData.position} · Clase {playerData.category}
+                      {t(playerData.position)} · {t('Clase')} {playerData.category}
                     </Text>
                   </HStack>
                   <Box as="h1" fontFamily="heading" lineHeight={0.86}
@@ -219,10 +221,10 @@ export default function Hero() {
                   {stats.map((s) => (
                     <Box key={s.label} className="hc-stat" opacity={0} borderLeft="1px solid" borderColor="whiteAlpha.300" pl={{ base: 2, lg: u(1.32) }}>
                       <Text fontFamily="mono" fontSize={{ base: '9px', lg: u(1.1) }} color="brand.gray"
-                        letterSpacing="widest" textTransform="uppercase">{s.label}</Text>
+                        letterSpacing="widest" textTransform="uppercase">{t(s.label)}</Text>
                       <Text fontFamily="heading" fontSize={{ base: 'clamp(20px, 6.4vw, 26px)', md: '3xl', lg: u(2.65) }} lineHeight={1} whiteSpace="nowrap"
                         sx={{ fontVariantNumeric: 'tabular-nums' }}>
-                        {s.text ?? (
+                        {(s.text && t(s.text)) ?? (
                           <span className="hc-count" data-value={s.value} data-decimals={s.decimals} data-suffix={s.suffix}>
                             {(0).toFixed(s.decimals) + s.suffix}
                           </span>
@@ -239,11 +241,11 @@ export default function Hero() {
                   px={{ base: 3, lg: u(1.76) }} py={{ base: 1.5, lg: u(0.88) }}>
                   <HStack spacing={{ base: 1, lg: u(0.44) }}>
                     <Image src={playerData.nationalityFlag} alt="Argentina" w={{ base: '20px', lg: u(2.2) }} />
-                    <Image src={playerData.secondNationalityFlag} alt="Polonia" w={{ base: '20px', lg: u(2.2) }} />
+                    <Image src={playerData.secondNationalityFlag} alt={t('Polonia')} w={{ base: '20px', lg: u(2.2) }} />
                   </HStack>
                   <Text fontFamily="mono" fontWeight="700" fontSize={{ base: '10px', lg: u(1.32) }}
                     letterSpacing="widest" textTransform="uppercase">
-                    Argentino - Polaco <Box as="span" color="brand.greenBright"> (UE) </Box>
+                    {t('Argentino - Polaco')} <Box as="span" color="brand.greenBright"> ({t('UE')}) </Box>
                   </Text>
                 </HStack>
 
@@ -255,7 +257,7 @@ export default function Hero() {
                     borderRadius={{ base: '10px', lg: u(1.1) }} transition="transform 0.2s, background 0.2s, color 0.2s"
                     _hover={{ bg: 'brand.greenBright', transform: 'translateY(-2px)' }} _active={{ transform: 'scale(0.97)' }}
                     _focusVisible={{ outline: '2px solid', outlineColor: 'brand.greenBright', outlineOffset: '3px' }}>
-                    Ver videos
+                    {t('Ver videos')}
                   </Box>
                   <Box as="button" type="button" className="hc-cta" opacity={0} onClick={() => scrollTo('#contact')}
                     border="1px solid" borderColor="whiteAlpha.500" fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: u(1.55) }}
@@ -264,7 +266,7 @@ export default function Hero() {
                     _hover={{ borderColor: 'brand.greenBright', transform: 'translateY(-2px)' }}
                     _active={{ transform: 'scale(0.97)' }}
                     _focusVisible={{ outline: '2px solid', outlineColor: 'brand.greenBright', outlineOffset: '3px' }}>
-                    Contacto
+                    {t('Contacto')}
                   </Box>
                 </Grid>
                 </Flex>

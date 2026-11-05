@@ -11,11 +11,13 @@ import { gsap } from 'gsap'
 import { FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import { playerData } from '../../data/playerData'
 import { links, scrollToSection, useActiveSection, useScrollState, useLockScroll, LangSwitch, Logo } from './navShared'
+import { useT } from '../../i18n'
 
 // foto que acompaña a cada link del menú
 const previewPhotos = [playerData.image, playerData.gallery[2]?.src, playerData.highlight.poster, playerData.gallery[4]?.src, playerData.gallery[10]?.src]
 
 export default function Navbar() {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const [hover, setHover] = useState(null)
   const active = useActiveSection()
@@ -63,11 +65,11 @@ export default function Navbar() {
 
         <Flex pointerEvents="auto" align="center" gap={3}>
           <LangSwitch bg="rgba(10,11,10,0.6)" backdropFilter="blur(10px)" />
-          <Flex ref={btn} as="button" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? 'Cerrar menú' : 'Abrir menú'}
+          <Flex ref={btn} as="button" type="button" onClick={() => setOpen(!open)} aria-expanded={open} aria-label={open ? t('Cerrar menú') : t('Abrir menú')}
             align="center" gap={3} h="44px" pl={4} pr="4px" borderRadius="full" role="group"
             bg={open ? 'brand.dark' : 'brand.white'} color={open ? 'white' : 'brand.dark'} transition="all 0.4s"
             border="1px solid" borderColor={open ? 'whiteAlpha.400' : 'brand.white'}>
-            <Text fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.2em">{open ? 'CERRAR' : 'MENÚ'}</Text>
+            <Text fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.2em" textTransform="uppercase">{open ? t('Cerrar') : t('Menú')}</Text>
             <Flex boxSize="36px" borderRadius="full" bg={open ? 'brand.white' : 'brand.dark'} align="center" justify="center"
               direction="column" gap="4px" transition="all 0.4s" _groupHover={{ transform: 'rotate(90deg)' }}>
               {[0, 1].map((i) => (
@@ -107,7 +109,7 @@ export default function Navbar() {
                     color={on ? 'white' : 'transparent'} transition="all 0.35s"
                     sx={on ? {} : { WebkitTextStroke: { base: '1px rgba(255,255,255,0.75)', lg: '1.5px rgba(255,255,255,0.75)' } }}
                     _groupHover={{ color: 'white', transform: 'translateX(14px)' }}>
-                    {l.label}
+                    {t(l.label)}
                   </Text>
                 </Flex>
               </Box>
@@ -120,7 +122,7 @@ export default function Navbar() {
           <Box>
             <Text fontFamily="heading" fontSize="2xl" lineHeight={1}>{playerData.displayName}</Text>
             <Text fontFamily="mono" fontSize="10px" letterSpacing="0.2em" textTransform="uppercase" color="brand.gray">
-              Arquero · #1 · {playerData.currentClub}
+              {t('Arquero')} · #1 · {playerData.currentClub}
             </Text>
           </Box>
           <Flex gap={3} align="center">

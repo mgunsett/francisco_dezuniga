@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Box, Flex, Text, Image, HStack, VStack } from '@chakra-ui/react'
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { useT } from '../../i18n'
 
 const MotionBox = motion(Box)
 
@@ -21,13 +22,14 @@ function Shield({ src, name, size = '36px' }) {
 }
 
 function MatchSlot({ data, label, labelColor }) {
+  const t = useT()
   const { home, away, homeScore, awayScore, date, stadium, competition } = data
 
   return (
     <Box>
       <Text fontFamily="mono" fontSize="9px" fontWeight="700" letterSpacing="widest"
             textTransform="uppercase" color={labelColor} mb={2}>
-        {label}
+        {t(label)}
       </Text>
 
       {/* Teams row */}
@@ -62,7 +64,7 @@ function MatchSlot({ data, label, labelColor }) {
           {competition && (
             <Text fontFamily="mono" fontSize="8px" color="brand.gray" letterSpacing="wider"
                   textTransform="uppercase" mt={0.5} textAlign="center">
-              {competition}
+              {t(competition)}
             </Text>
           )}
         </Box>
@@ -92,6 +94,7 @@ function MatchSlot({ data, label, labelColor }) {
 }
 
 function CollapsedTab({ last, onClick }) {
+  const t = useT()
   const hasScore = last?.homeScore !== null && last?.awayScore !== null
   const reduceMotion = useReducedMotion()
 
@@ -100,7 +103,7 @@ function CollapsedTab({ last, onClick }) {
       as="button"
       type="button"
       onClick={onClick}
-      aria-label="Ver partidos"
+      aria-label={t('Ver partidos')}
       key="tab"
       initial={{ opacity: 0, x: 16 }}
       animate={{ opacity: 1, x: 0 }}
@@ -142,7 +145,7 @@ function CollapsedTab({ last, onClick }) {
         sx={{ writingMode: 'vertical-rl' }}
         lineHeight={1}
       >
-        Partidos
+        {t('Partidos')}
       </Text>
 
       {hasScore && (
@@ -181,6 +184,7 @@ function CollapsedTab({ last, onClick }) {
 }
 
 export function MatchBox({ last, next, variant = 'card' }) {
+  const t = useT()
   const isCard = variant === 'card'
   const [isOpen, setIsOpen] = useState(false)
 
@@ -218,7 +222,7 @@ export function MatchBox({ last, next, variant = 'card' }) {
                 as="button"
                 type="button"
                 onClick={() => setIsOpen(false)}
-                aria-label="Cerrar partidos"
+                aria-label={t('Cerrar partidos')}
                 position="absolute"
                 top={'130px'}
                 right={3}

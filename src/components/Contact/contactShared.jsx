@@ -5,15 +5,17 @@ import { FaWhatsapp, FaEnvelope, FaInstagram } from 'react-icons/fa'
 import { FiArrowUpRight, FiCheck, FiArrowUp } from 'react-icons/fi'
 import { playerData } from '../../data/playerData'
 import sportfolio from '../../../assets/logo_sport.png'
+import { useT, useI18n } from '../../i18n'
 
 export const reduceMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export function Eyebrow({ children, color = 'brand.gray', ...rest }) {
+  const t = useT()
   return (
     <Text fontFamily="mono" fontSize={{ base: '10px', lg: '11px' }} fontWeight="700"
       letterSpacing="0.26em" textTransform="uppercase" color={color} {...rest}>
-      {children}
+      {typeof children === 'string' ? t(children) : children}
     </Text>
   )
 }
@@ -37,6 +39,7 @@ export function goTo(e, href) {
 
 // ── Formulario (FormSubmit: llega por email sin backend propio) ──
 export function ContactForm({ compact = false, ...rest }) {
+  const { t, lang } = useI18n()
   const [state, setState] = useState('idle') // idle | sending | ok | error
   const onSubmit = async (e) => {
     e.preventDefault()
@@ -47,7 +50,7 @@ export function ContactForm({ compact = false, ...rest }) {
       const r = await fetch(`https://formsubmit.co/ajax/${playerData.contact.formEmail}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ ...data, _subject: `Web ${playerData.displayName} · ${data.perfil} · ${data.nombre}`, _template: 'table' }),
+        body: JSON.stringify({ ...data, _subject: `Web ${playerData.displayName} · ${data.perfil} · ${data.nombre}`, idioma: lang.toUpperCase(), _template: 'table' }),
       })
       if (!r.ok) throw new Error()
       setState('ok'); e.currentTarget?.reset?.()
@@ -65,10 +68,10 @@ export function ContactForm({ compact = false, ...rest }) {
         <Flex boxSize="52px" borderRadius="full" bg="brand.greenBright" color="brand.dark" align="center" justify="center">
           <Box as={FiCheck} fontSize="24px" />
         </Flex>
-        <Text fontFamily="heading" fontSize="4xl" lineHeight={1}>¡Mensaje enviado!</Text>
-        <Text fontFamily="mono" fontSize="sm" color="brand.gray2">Gracias por escribir. Te vamos a responder a la brevedad.</Text>
+        <Text fontFamily="heading" fontSize="4xl" lineHeight={1}>{t('¡Mensaje enviado!')}</Text>
+        <Text fontFamily="mono" fontSize="sm" color="brand.gray2">{t('Gracias por escribir. Te vamos a responder a la brevedad.')}</Text>
         <Box as="button" type="button" onClick={() => setState('idle')} fontFamily="mono" fontSize="xs" letterSpacing="0.2em"
-          textTransform="uppercase" color="brand.gray" textDecoration="underline" mt={2}>Enviar otro</Box>
+          textTransform="uppercase" color="brand.gray" textDecoration="underline" mt={2}>{t('Enviar otro')}</Box>
       </Flex>
     )
   }
@@ -76,13 +79,13 @@ export function ContactForm({ compact = false, ...rest }) {
     <Box as="form" onSubmit={onSubmit} {...rest}>
       <input type="text" name="_honey" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
       <Grid templateColumns={{ base: '1fr', md: compact ? '1fr' : '1fr 1fr' }} gap={3}>
-        <Input name="nombre" placeholder="Nombre y apellido" required aria-label="Nombre y apellido" {...field} />
-        <Input name="email" type="email" placeholder="Email" required aria-label="Email" {...field} />
-        <Select name="perfil" aria-label="Perfil" defaultValue="Club" {...field} sx={{ option: { bg: '#0A0B0A' } }}>
-          {['Club', 'Scout / Ojeador', 'Agente / Representante', 'Prensa', 'Marca / Sponsor', 'Otro'].map((o) => <option key={o}>{o}</option>)}
+        <Input name="nombre" placeholder={t('Nombre y apellido')} required aria-label={t('Nombre y apellido')} {...field} />
+        <Input name="email" type="email" placeholder={t('Email')} required aria-label={t('Email')} {...field} />
+        <Select name="perfil" aria-label={t('Perfil')} defaultValue="Club" {...field} sx={{ option: { bg: '#0A0B0A' } }}>
+          {['Club', 'Scout / Ojeador', 'Agente / Representante', 'Prensa', 'Marca / Sponsor', 'Otro'].map((o) => <option key={o} value={o}>{t(o)}</option>)}
         </Select>
-        <Input name="organizacion" placeholder="Club u organización (opcional)" aria-label="Club u organización" {...field} />
-        <Textarea name="mensaje" placeholder="Mensaje" required aria-label="Mensaje" rows={5} gridColumn={{ md: compact ? 'auto' : '1 / -1' }}
+        <Input name="organizacion" placeholder={t('Club u organización (opcional)')} aria-label={t('Club u organización')} {...field} />
+        <Textarea name="mensaje" placeholder={t('Mensaje')} required aria-label={t('Mensaje')} rows={5} gridColumn={{ md: compact ? 'auto' : '1 / -1' }}
           {...field} h="auto" py={3} resize="vertical" />
       </Grid>
       <Flex mt={4} align="center" justify="space-between" gap={4} wrap="wrap">
@@ -93,12 +96,12 @@ export function ContactForm({ compact = false, ...rest }) {
           bg="brand.white" color="brand.dark" borderRadius="full" px={6} h="48px" fontFamily="mono" fontWeight="700"
           fontSize="xs" letterSpacing="0.2em" textTransform="uppercase" transition="all 0.3s"
           _hover={{ bg: 'brand.greenBright' }} opacity={state === 'sending' ? 0.6 : 1}>
-          {state === 'sending' ? 'Enviando…' : 'Enviar mensaje'} <Box as={FiArrowUpRight} fontSize="16px" />
+          {state === 'sending' ? t('Enviando…') : t('Enviar mensaje')} <Box as={FiArrowUpRight} fontSize="16px" />
         </Box>
       </Flex>
       {state === 'error' && (
         <Text fontFamily="mono" fontSize="xs" color="#ff6b6b" mt={3}>
-          No se pudo enviar. Probá de nuevo o escribinos por WhatsApp.
+          {t('No se pudo enviar. Probá de nuevo o escribinos por WhatsApp.')}
         </Text>
       )}
     </Box>
@@ -107,6 +110,7 @@ export function ContactForm({ compact = false, ...rest }) {
 
 // ── Tarjeta de persona de contacto ─────────────────────────────
 export function PersonCard({ person, highlight = false, ...rest }) {
+  const t = useT()
   const btn = {
     as: 'a', target: '_blank', rel: 'noopener noreferrer', display: 'inline-flex', alignItems: 'center', gap: 2,
     h: '40px', px: 4, borderRadius: 'full', border: '1px solid', fontFamily: 'mono', fontSize: '11px', fontWeight: '700',
@@ -120,13 +124,13 @@ export function PersonCard({ person, highlight = false, ...rest }) {
       <Text fontFamily="heading" fontSize={{ base: '3xl', lg: '4xl' }} lineHeight={1} mt={1}>{person.name}</Text>
       
       <Flex gap={2} mt={5} wrap="wrap">
-        <Box {...btn} href={waLink(person.whatsapp)} bg="brand.white" color="brand.dark" borderColor="brand.white"
+        <Box {...btn} href={waLink(person.whatsapp, t('Hola, los contacto desde la web de {name}.', { name: playerData.displayName }))} bg="brand.white" color="brand.dark" borderColor="brand.white"
           _hover={{ bg: 'brand.greenBright', borderColor: 'brand.greenBright' }}>
           <Box as={FaWhatsapp} fontSize="15px" /> WhatsApp
         </Box>
         <Box {...btn} href={`mailto:${person.email}`} borderColor="whiteAlpha.400" color="white"
           _hover={{ borderColor: 'white', bg: 'whiteAlpha.100' }}>
-          <Box as={FaEnvelope} fontSize="13px" /> Email
+          <Box as={FaEnvelope} fontSize="13px" /> {t('Email')}
         </Box>
       </Flex>
     </Box>
@@ -135,6 +139,7 @@ export function PersonCard({ person, highlight = false, ...rest }) {
 
 // ── Bloque Europa: disponibilidad + pasaporte + idiomas ────────
 export function Availability({ variant = 'card', ...rest }) {
+  const t = useT()
   const a = playerData.contact.availability
   return (
     <Box {...rest}>
@@ -147,20 +152,20 @@ export function Availability({ variant = 'card', ...rest }) {
         <Eyebrow color="brand.greenBright">{a.title}</Eyebrow>
       </Flex>
       {variant !== 'mini' && (
-        <Text fontFamily="mono" fontSize={{ base: 'sm', lg: 'md' }} color="brand.gray2" lineHeight={1.7} maxW="520px">{a.text}</Text>
+        <Text fontFamily="mono" fontSize={{ base: 'sm', lg: 'md' }} color="brand.gray2" lineHeight={1.7} maxW="520px">{t(a.text)}</Text>
       )}
       <Flex gap={2} mt={variant === 'mini' ? 0 : 5} wrap="wrap" align="center">
         <Flex align="center" gap={2} border="1px solid" borderColor="whiteAlpha.300" borderRadius="full" h="34px" px={3}>
           <Image src={playerData.secondNationalityFlag} alt="" h="12px" borderRadius="2px" />
           <Text fontFamily="mono" fontSize="10px" fontWeight="700" letterSpacing="0.16em" textTransform="uppercase">
-            Pasaporte <Box as="span" color="brand.greenBright">UE</Box>
+            {t('Pasaporte')} <Box as="span" color="brand.greenBright">{t('UE')}</Box>
           </Text>
         </Flex>
         {a.languages.map((l) => (
           <Flex key={l.code} align="center" gap={2} border="1px solid" borderColor="whiteAlpha.300" borderRadius="full" h="34px" px={3}
-            title={`${l.label} · ${l.level}`}>
+            title={`${t(l.label)} · ${t(l.level)}`}>
             <Text fontFamily="heading" fontSize="md" lineHeight={1}>{l.code}</Text>
-            <Text fontFamily="mono" fontSize="9px" letterSpacing="0.14em" textTransform="uppercase" color="brand.gray">{l.level}</Text>
+            <Text fontFamily="mono" fontSize="9px" letterSpacing="0.14em" textTransform="uppercase" color="brand.gray">{t(l.level)}</Text>
           </Flex>
         ))}
       </Flex>
@@ -193,15 +198,16 @@ export function SocialLinks({ size = 'lg', ...rest }) {
 
 // ── Pie legal + crédito de desarrollo ──────────────────────────
 export function FooterBottom({ ...rest }) {
+  const t = useT()
   return (
     <Flex direction={{ base: 'column', md: 'row' }} justify="space-between" align={{ base: 'flex-start', md: 'center' }}
       gap={3} pt={6} borderTop="1px solid" borderColor="whiteAlpha.200" {...rest}>
       <Text fontFamily="mono" fontSize="11px" letterSpacing="0.12em" textTransform="uppercase" color="brand.gray">
-        © {new Date().getFullYear()} {playerData.displayName} · Todos los derechos reservados
+        © {new Date().getFullYear()} {playerData.displayName} · {t('Todos los derechos reservados')}
       </Text>
       <Flex direction="column" fontSize="12px" color="rgba(255,255,255,0.3)" letterSpacing="0.05em"
           textTransform="uppercase" fontFamily="'Barlow Condensed', sans-serif" >
-            Desarrollo Web
+            {t('Desarrollo web')}
             <Box width="95px" height="1px" color="rgba(255,255,255,0.3)"/>
             <Link 
             href="https://matiasgunsett.netlify.app/sportfolio" 
@@ -218,11 +224,12 @@ export function FooterBottom({ ...rest }) {
 }
 
 export function BackToTop(props) {
+  const t = useT()
   return (
-    <Flex as="button" type="button" onClick={(e) => goTo(e, '#hero')} aria-label="Volver arriba" align="center" gap={2}
+    <Flex as="button" type="button" onClick={(e) => goTo(e, '#hero')} aria-label={t('Volver arriba')} align="center" gap={2}
       fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.2em" textTransform="uppercase" color="white"
       role="group" {...props}>
-      Volver arriba
+      {t('Volver arriba')}
       <Flex boxSize="36px" borderRadius="full" border="1px solid" borderColor="whiteAlpha.400" align="center" justify="center"
         transition="all 0.3s" _groupHover={{ bg: 'brand.white', color: 'brand.dark', transform: 'translateY(-3px)' }}>
         <Box as={FiArrowUp} />

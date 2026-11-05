@@ -5,21 +5,24 @@ import {
 } from '@chakra-ui/react'
 import useScrubReveal from '../../hooks/useScrubReveal'
 import { playerData } from '../../data/playerData'
+import { useT } from '../../i18n'
 
 export const overallOf = (stats) =>
   Math.round(stats.reduce((sum, s) => sum + s.value, 0) / stats.length)
 
 export function Eyebrow({ children, color = 'brand.gray', ...rest }) {
+  const t = useT()
   return (
     <Text fontFamily="mono" fontSize={{ base: '10px', lg: '11px' }} fontWeight="700"
       letterSpacing="0.26em" textTransform="uppercase" color={color} {...rest}>
-      {children}
+      {typeof children === 'string' ? t(children) : children}
     </Text>
   )
 }
 
 // Título de bloque con la barrita verde (detalle)
 export function BlockTitle({ eyebrow, title, right, ...rest }) {
+  const t = useT()
   return (
     <Flex align="flex-end" justify="space-between" gap={4} mb={{ base: 5, lg: 7 }} {...rest}>
       <Box>
@@ -28,7 +31,7 @@ export function BlockTitle({ eyebrow, title, right, ...rest }) {
           <Eyebrow>{eyebrow}</Eyebrow>
         </Flex>
         <Text as="h3" fontFamily="heading" fontSize={{ base: '4xl', lg: '5xl' }} lineHeight={1}>
-          {title}
+          {t(title)}
         </Text>
       </Box>
       {right}
@@ -38,6 +41,7 @@ export function BlockTitle({ eyebrow, title, right, ...rest }) {
 
 // Contenedor de la sección con su encabezado
 export function SectionShell({ children }) {
+  const t = useT()
   const sectionRef = useRef(null)
   const titleRef = useRef(null)
   useScrubReveal(sectionRef, {
@@ -57,7 +61,7 @@ export function SectionShell({ children }) {
         <Box ref={titleRef} mb={{ base: 8, lg: 12 }}>
           <Eyebrow color="brand.bone">Perfil</Eyebrow>
           <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>
-            Estadísticas
+            {t('Estadísticas')}
           </Text>
         </Box>
         {children}
@@ -78,14 +82,15 @@ export function buenaFeBox() {
 
 // Imagen completa con el recuadro verde sobre su nombre
 export function BuenaFeImage({ markClass, onOpen, hideMark = false, children, ...rest }) {
+  const t = useT()
   const { image, title, competition } = playerData.buenaFe
   const b = buenaFeBox()
   return (
     <Box as={onOpen ? 'button' : 'div'} type={onOpen ? 'button' : undefined} onClick={onOpen}
       position="relative" display="block" w="100%" overflow="hidden" borderRadius="10px"
-      cursor={onOpen ? 'zoom-in' : 'default'} aria-label={onOpen ? `Ampliar ${title} · ${competition}` : undefined}
+      cursor={onOpen ? 'zoom-in' : 'default'} aria-label={onOpen ? `${t('Ampliar')} ${t(title)} · ${competition}` : undefined}
       {...rest}>
-      <Image src={image} alt={`${title} · ${competition} · Deportivo Riestra`} w="100%" display="block" loading="lazy" />
+      <Image src={image} alt={`${t(title)} · ${competition} · Deportivo Riestra`} w="100%" display="block" loading="lazy" />
       {!hideMark && <Box className={markClass} position="absolute" pointerEvents="none"
         left={`${b.left}%`} top={`${b.top}%`} w={`${b.width}%`} h={`${b.height}%`}
         border="2px solid" borderColor="brand.greenBright" borderRadius="4px"
@@ -97,10 +102,11 @@ export function BuenaFeImage({ markClass, onOpen, hideMark = false, children, ..
 
 // Recorte ampliado de su línea, como una lupa
 export function BuenaFeLens({ ...rest }) {
+  const t = useT()
   const { image, size, highlight: h } = playerData.buenaFe
   const b = buenaFeBox()
   return (
-    <Box role="img" aria-label="44. Francisco de Zúñiga, en la lista de buena fe"
+    <Box role="img" aria-label={t('44. Francisco de Zúñiga, en la lista de buena fe')}
       w="100%" sx={{ aspectRatio: `${h.w} / ${h.h}` }}
       bgImage={`url(${image})`} bgRepeat="no-repeat"
       bgSize={`${(size.w / h.w) * 100}% auto`}
@@ -111,6 +117,7 @@ export function BuenaFeLens({ ...rest }) {
 
 // Visor a pantalla completa
 export function BuenaFeLightbox({ isOpen, onClose }) {
+  const t = useT()
   const { image, title, competition } = playerData.buenaFe
   useEffect(() => {
     const l = typeof window !== 'undefined' && window.__lenis
@@ -128,7 +135,7 @@ export function BuenaFeLightbox({ isOpen, onClose }) {
           <BuenaFeImage />
           <Text fontFamily="mono" fontSize="xs" color="brand.gray2" textAlign="center" mt={3}
             letterSpacing="0.2em" textTransform="uppercase">
-            {title} · {competition}
+            {t(title)} · {competition}
           </Text>
         </Box>
       </ModalContent>

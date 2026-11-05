@@ -1,7 +1,12 @@
 // Piezas compartidas del Navbar: links, scroll suave, sección activa,
-// progreso de scroll y selector de idioma (visual hasta la traducción).
-import { useEffect, useState } from 'react'
+// progreso de scroll y selector de idioma.
+import { useEffect, useRef, useState } from 'react'
 import { Box, Flex, Text } from '@chakra-ui/react'
+import { AnimatePresence, motion } from 'framer-motion'
+import { FiGlobe, FiChevronDown, FiCheck } from 'react-icons/fi'
+import { LANGS, useI18n } from '../../i18n'
+
+const MotionBox = motion(Box)
 
 export const links = [
   { label: 'Inicio', href: '#hero' },
@@ -71,21 +76,55 @@ export function useLockScroll(locked) {
   }, [locked])
 }
 
-// Selector de idioma (solo visual por ahora: se activa con la traducción)
+// Selector de idioma: ES (predeterminado) / EN / IT / FR
 export function LangSwitch({ size = 'sm', ...rest }) {
-  const [lang, setLang] = useState('ES')
+  const { lang, setLang } = useI18n()
+  const [open, setOpen] = useState(false)
+  const ref = useRef(null)
+  const cur = LANGS.find((l) => l.code === lang) || LANGS[0]
+  useEffect(() => {
+    if (!open) return
+    const onDoc = (e) => { if (!ref.current?.contains(e.target)) setOpen(false) }
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    document.addEventListener('pointerdown', onDoc)
+    window.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('pointerdown', onDoc); window.removeEventListener('keydown', onKey) }
+  }, [open])
+  const h = size === 'sm' ? '34px' : '40px'
   return (
-    <Flex border="1px solid" borderColor="whiteAlpha.300" borderRadius="full" p="2px" gap="2px" {...rest}
-      role="group" aria-label="Idioma">
-      {['ES', 'EN'].map((l) => (
-        <Box key={l} as="button" type="button" onClick={() => setLang(l)} aria-pressed={lang === l}
-          px={size === 'sm' ? 2 : 3} h={size === 'sm' ? '22px' : '30px'} borderRadius="full"
-          bg={lang === l ? 'brand.white' : 'transparent'} color={lang === l ? 'brand.dark' : 'whiteAlpha.700'}
-          transition="all 0.25s" _hover={{ color: lang === l ? 'brand.dark' : 'white' }}>
-          <Text fontFamily="mono" fontSize={size === 'sm' ? '9px' : '11px'} fontWeight="700" letterSpacing="0.14em">{l}</Text>
-        </Box>
-      ))}
-    </Flex>
+    <Box ref={ref} position="relative" {...rest}>
+      <Flex as="button" type="button" onClick={() => setOpen((o) => !o)} aria-haspopup="listbox" aria-expanded={open}
+        aria-label={`Idioma: ${cur.label}`} align="center" gap={1.5} h={h} pl={3} pr={2.5} borderRadius="full"
+        border="1px solid" borderColor={open ? 'brand.white' : 'whiteAlpha.400'} bg="rgba(10,11,10,0.6)" backdropFilter="blur(10px)"
+        color="white" transition="border-color 0.25s" _hover={{ borderColor: 'brand.white' }}>
+        <Box as={FiGlobe} fontSize="13px" opacity={0.8} />
+        <Text fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.14em">{cur.short}</Text>
+        <Box as={FiChevronDown} fontSize="13px" transition="transform 0.3s" transform={open ? 'rotate(180deg)' : 'none'} />
+      </Flex>
+      <AnimatePresence>
+        {open && (
+          <MotionBox role="listbox" aria-label="Idioma" position="absolute" top={`calc(${h} + 8px)`} right={0} minW="168px" zIndex={1100}
+            bg="rgba(10,11,10,0.96)" backdropFilter="blur(14px)" border="1px solid" borderColor="whiteAlpha.300" borderRadius="14px"
+            p={1.5} boxShadow="0 18px 50px rgba(0,0,0,0.6)"
+            initial={{ opacity: 0, y: -6, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }} style={{ transformOrigin: 'top right' }}>
+            {LANGS.map((l) => {
+              const on = l.code === lang
+              return (
+                <Flex key={l.code} as="button" type="button" role="option" aria-selected={on} lang={l.code}
+                  onClick={() => { setLang(l.code); setOpen(false) }} w="100%" align="center" gap={3} px={3} py={2.5}
+                  borderRadius="10px" bg={on ? 'whiteAlpha.100' : 'transparent'} _hover={{ bg: 'whiteAlpha.100' }} transition="background 0.2s">
+                  <Text fontFamily="mono" fontSize="11px" fontWeight="700" letterSpacing="0.14em" w="22px" textAlign="left"
+                    color={on ? 'brand.greenBright' : 'brand.gray'}>{l.short}</Text>
+                  <Text fontFamily="heading" fontSize="lg" lineHeight={1} flex={1} textAlign="left">{l.label}</Text>
+                  {on && <Box as={FiCheck} fontSize="14px" color="brand.greenBright" />}
+                </Flex>
+              )
+            })}
+          </MotionBox>
+        )}
+      </AnimatePresence>
+    </Box>
   )
 }
 

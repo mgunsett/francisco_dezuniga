@@ -12,10 +12,12 @@ import { FaInstagram } from 'react-icons/fa'
 import { playerData } from '../../data/playerData'
 import { Eyebrow, HighlightPlayer, ReelCard, ReelModal, ReelSlider, usePlayer, reduceMotion } from './videoShared'
 import { VerticalTitleRow } from './VerticalTitleRow'
+import { useT } from '../../i18n'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function VideosSection() {
+  const t = useT()
   const hl = playerData.highlight
   const player = usePlayer()
   const [open, setOpen] = useState(null)
@@ -43,7 +45,7 @@ export default function VideosSection() {
         <Flex className="va-head" justify="space-between" align="flex-end" wrap="wrap" gap={4} mb={{ base: 6, lg: 10 }}>
           <Box>
             <Eyebrow color="brand.bone">MEDIA</Eyebrow>
-            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>VIDEOS</Text>
+            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>{t('Videos')}</Text>
           </Box>
         </Flex>
 
@@ -61,7 +63,7 @@ export default function VideosSection() {
           <Box display={{ base: 'block', md: 'none' }}>
             <Flex align="center" gap={3} mb={5}>
               <Box as={FaInstagram} fontSize="18px" />
-              <Text fontFamily="heading" fontSize="3xl" lineHeight={1}>En Instagram</Text>
+              <Text fontFamily="heading" fontSize="3xl" lineHeight={1}>{t('En Instagram')}</Text>
             </Flex>
             <ReelSlider videos={playerData.videos} onOpen={setOpen} />
           </Box>

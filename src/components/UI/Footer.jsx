@@ -2,8 +2,10 @@
 import { Box, Flex, Text } from '@chakra-ui/react'
 import { playerData } from '../../data/playerData'
 import { Eyebrow, FooterBottom, navLinks, goTo } from '../Contact/contactShared'
+import { useT } from '../../i18n'
 
 export default function Footer() {
+  const t = useT()
   return (
   <Box as="footer" bg="#060706" px={{ base: 5, md: 12, lg: 10 }} pt={{ base: 12, lg: 14 }} pb={8} borderTop="1px solid" borderColor="whiteAlpha.200">
       <Box maxW="1200px" mx="auto">
@@ -17,7 +19,7 @@ export default function Footer() {
           <Flex gap={{ base: 4, md: 8 }} wrap="wrap">
             {navLinks.map((l) => (
               <Text key={l.href} as="a" href={l.href} onClick={(e) => goTo(e, l.href)} fontFamily="mono" fontSize="11px"
-                letterSpacing="0.2em" textTransform="uppercase" color="brand.gray2" _hover={{ color: 'white' }}>{l.label}</Text>
+                letterSpacing="0.2em" textTransform="uppercase" color="brand.gray2" _hover={{ color: 'white' }}>{t(l.label)}</Text>
             ))}
           </Flex>
         </Flex>

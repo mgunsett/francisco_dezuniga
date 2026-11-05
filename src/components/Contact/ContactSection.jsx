@@ -4,10 +4,12 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { playerData } from '../../data/playerData'
 import { Eyebrow, ContactForm, PersonCard, Availability, SocialLinks, reduceMotion } from './contactShared'
+import { useT } from '../../i18n'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function ContactSection() {
+  const t = useT()
   const root = useRef(null)
   useEffect(() => {
     if (reduceMotion()) return
@@ -25,7 +27,7 @@ export default function ContactSection() {
         <Box maxW="1200px" mx="auto">
           <Box className="ca-rev" mb={{ base: 8, lg: 12 }}>
             <Eyebrow color="brand.bone">Hablemos</Eyebrow>
-            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>Contacto</Text>
+            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>{t('Contacto')}</Text>
           </Box>
 
           <Grid className="ca-rev" templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={4}>
@@ -40,7 +42,7 @@ export default function ContactSection() {
           <Grid className="ca-rev" templateColumns={{ base: '1fr', lg: '0.85fr 1.15fr' }} gap={{ base: 8, lg: 12 }} mt={{ base: 12, lg: 16 }}
             border="1px solid" borderColor="whiteAlpha.300" borderRadius="14px" p={{ base: 5, md: 8, lg: 10 }}>
             <Box>
-              <Text fontFamily="heading" fontSize={{ base: '4xl', lg: '5xl' }} lineHeight={1} mb={4}>Escribinos</Text>
+              <Text fontFamily="heading" fontSize={{ base: '4xl', lg: '5xl' }} lineHeight={1} mb={4}>{t('Escribinos')}</Text>
               <Availability />
             </Box>
             <ContactForm />

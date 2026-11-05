@@ -3,14 +3,16 @@ import { useEffect, useRef } from 'react'
 import { Box, Flex, Text, Image } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { useT } from '../../i18n'
 
 const MotionBox = motion(Box)
 
 export function Eyebrow({ children, color = 'brand.gray', ...rest }) {
+  const t = useT()
   return (
     <Text fontFamily="mono" fontSize={{ base: '10px', lg: '11px' }} fontWeight="700"
       letterSpacing="0.26em" textTransform="uppercase" color={color} {...rest}>
-      {children}
+      {typeof children === 'string' ? t(children) : children}
     </Text>
   )
 }
@@ -19,6 +21,7 @@ export const pad = (n) => String(n).padStart(2, '0')
 
 // Visor a pantalla completa con flechas, teclado y swipe
 export function Lightbox({ photos, index, onClose, onIndex }) {
+  const t = useT()
   const open = index !== null && index !== undefined
   const total = photos.length
   const touch = useRef(0)
@@ -57,25 +60,25 @@ export function Lightbox({ photos, index, onClose, onIndex }) {
             <MotionBox key={photo.id} onClick={(e) => e.stopPropagation()} textAlign="center"
               initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.97 }}
               transition={{ duration: 0.25 }}>
-              <Image src={photo.src} alt={photo.alt} maxH={{ base: '72vh', lg: '80vh' }} maxW="88vw" objectFit="contain"
+              <Image src={photo.src} alt={`${photo.alt.split(' · ')[0]} · ${t(photo.caption)}`} maxH={{ base: '72vh', lg: '80vh' }} maxW="88vw" objectFit="contain"
                 borderRadius="10px" mx="auto" draggable={false} />
               <Flex justify="center" align="center" gap={3} mt={4}>
                 <Eyebrow color="brand.greenBright">{photo.category}</Eyebrow>
                 <Box w="4px" h="4px" borderRadius="full" bg="whiteAlpha.500" />
-                <Text fontFamily="heading" fontSize="xl" lineHeight={1}>{photo.caption}</Text>
+                <Text fontFamily="heading" fontSize="xl" lineHeight={1}>{t(photo.caption)}</Text>
               </Flex>
             </MotionBox>
           </AnimatePresence>
-          <Box {...arrow} left={{ base: 2, lg: 8 }} aria-label="Foto anterior" onClick={(e) => { e.stopPropagation(); prev() }}>
+          <Box {...arrow} left={{ base: 2, lg: 8 }} aria-label={t('Foto anterior')} onClick={(e) => { e.stopPropagation(); prev() }}>
             <Box as={FiChevronLeft} fontSize="22px" />
           </Box>
-          <Box {...arrow} right={{ base: 2, lg: 8 }} aria-label="Foto siguiente" onClick={(e) => { e.stopPropagation(); next() }}>
+          <Box {...arrow} right={{ base: 2, lg: 8 }} aria-label={t('Foto siguiente')} onClick={(e) => { e.stopPropagation(); next() }}>
             <Box as={FiChevronRight} fontSize="22px" />
           </Box>
           <Text position="absolute" top={6} left={6} fontFamily="mono" fontSize="xs" letterSpacing="0.2em" color="brand.gray2">
             {pad(index + 1)} / {pad(total)}
           </Text>
-          <Box as="button" type="button" position="absolute" top={5} right={5} aria-label="Cerrar" color="white"
+          <Box as="button" type="button" position="absolute" top={5} right={5} aria-label={t('Cerrar')} color="white"
             onClick={onClose} _hover={{ transform: 'rotate(90deg)' }} transition="transform 0.3s">
             <Box as={FiX} fontSize="28px" />
           </Box>

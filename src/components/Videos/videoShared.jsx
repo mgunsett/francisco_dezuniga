@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FiPlay, FiPause, FiMaximize, FiX } from 'react-icons/fi'
 import { FaInstagram } from 'react-icons/fa'
 import { playerData } from '../../data/playerData'
+import { useT } from '../../i18n'
 
 const MotionBox = motion(Box)
 export const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
@@ -13,10 +14,11 @@ export const reduceMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export function Eyebrow({ children, color = 'brand.gray', ...rest }) {
+  const t = useT()
   return (
     <Text fontFamily="mono" fontSize={{ base: '10px', lg: '11px' }} fontWeight="700"
       letterSpacing="0.26em" textTransform="uppercase" color={color} {...rest}>
-      {children}
+      {typeof children === 'string' ? t(children) : children}
     </Text>
   )
 }
@@ -99,6 +101,7 @@ export function usePlayer() {
 // Portada del video: foto del jugador, título y botón de play.
 // Se desvanece al pasar el mouse para dejar ver el adelanto.
 function Cover({ visible, previewing, onPlay }) {
+  const t = useT()
   const hl = playerData.highlight
   return (
     <Box position="absolute" inset={0} zIndex={2} cursor="pointer" onClick={onPlay}
@@ -117,7 +120,7 @@ function Cover({ visible, previewing, onPlay }) {
       <Flex position="absolute" inset={0} direction="column" justify="center"
         pl={{ base: 5, md: 10, lg: 16 }} pr="40%" gap={{ base: 1, lg: 2 }}>
         
-        <Text fontFamily="heading" lineHeight={0.85} fontSize={{ base: '42px', sm: '64px', md: '96px', lg: '132px' }}>Highlights</Text>
+        <Text fontFamily="heading" lineHeight={0.85} fontSize={{ base: '42px', sm: '64px', md: '96px', lg: '132px' }}>{t('Highlights')}</Text>
         <Text fontFamily="heading" lineHeight={0.85} fontSize={{ base: '42px', sm: '64px', md: '96px', lg: '132px' }}
           color="transparent" sx={{ WebkitTextStroke: { base: '1px #fff', lg: '2px #fff' } }}>2026</Text>
         <Flex align="center" gap={{ base: 2, lg: 4 }} mt={{ base: 2, lg: 6 }}>
@@ -140,6 +143,7 @@ function Cover({ visible, previewing, onPlay }) {
 
 // ── Reproductor con portada, adelanto al hover y controles propios ──
 export function HighlightPlayer({ player, radius = '16px', showChapters = true, ...rest }) {
+  const t = useT()
   const hl = playerData.highlight
   const { ref, mode, playing, time, duration, toggle, seek, fullscreen, startPreview, stopPreview, playFull } = player
   const total = duration || 142
@@ -158,7 +162,7 @@ export function HighlightPlayer({ player, radius = '16px', showChapters = true, 
       <AspectRatio ratio={16 / 9}>
         <Box as="video" ref={ref} src={hl.src} poster={hl.poster} playsInline muted preload="metadata"
           onClick={toggle} cursor="pointer" objectFit="cover" w="100%" h="100%"
-          aria-label={`${playerData.displayName} · ${hl.title}`} />
+          aria-label={`${playerData.displayName} · ${t(hl.title)}`} />
       </AspectRatio>
 
       <Cover visible={mode === 'cover'} previewing={mode === 'preview'} onPlay={() => playFull(0)} />
@@ -180,19 +184,19 @@ export function HighlightPlayer({ player, radius = '16px', showChapters = true, 
         bg="linear-gradient(to top, rgba(0,0,0,0.75), transparent)"
         display={full ? 'block' : 'none'} opacity={{ base: 1, lg: playing ? 0 : 1 }} _groupHover={{ opacity: 1 }} transition="opacity 0.3s ease">
         <Box ref={barRef} position="relative" h="16px" cursor="pointer" onClick={onBar} role="slider"
-          aria-label="Línea de tiempo" aria-valuemin={0} aria-valuemax={Math.round(total)} aria-valuenow={Math.round(time)}>
+          aria-label={t('Línea de tiempo')} aria-valuemin={0} aria-valuemax={Math.round(total)} aria-valuenow={Math.round(time)}>
           <Box position="absolute" left={0} right={0} top="7px" h="3px" bg="whiteAlpha.300" borderRadius="full" />
             <Box position="absolute" left={0} top="7px" h="3px" bg="brand.white" borderRadius="full" w={`${(time / total) * 100}%`} />
         </Box>
         <Flex align="center" gap={3} mt={1}>
-          <Box as="button" type="button" onClick={toggle} aria-label={playing ? 'Pausa' : 'Reproducir'} color="white" display="flex">
+          <Box as="button" type="button" onClick={toggle} aria-label={playing ? t('Pausa') : t('Reproducir')} color="white" display="flex">
             <Box as={playing ? FiPause : FiPlay} fontSize="16px" />
           </Box>
           <Text fontFamily="mono" fontSize="11px" color="whiteAlpha.800" sx={{ fontVariantNumeric: 'tabular-nums' }}>
             {fmt(time)} / {fmt(total)}
           </Text>
           <Box flex={1} />
-          <Box as="button" type="button" onClick={fullscreen} aria-label="Pantalla completa" color="white" display="flex">
+          <Box as="button" type="button" onClick={fullscreen} aria-label={t('Pantalla completa')} color="white" display="flex">
             <Box as={FiMaximize} fontSize="15px" />
           </Box>
         </Flex>
@@ -201,7 +205,7 @@ export function HighlightPlayer({ player, radius = '16px', showChapters = true, 
       {/* Play central al pausar */}
       <Flex position="absolute" inset={0} zIndex={2} align="center" justify="center" pointerEvents="none"
         opacity={full && !playing ? 1 : 0} transition="opacity 0.3s">
-        <Flex as="button" type="button" onClick={toggle} pointerEvents={full && !playing ? 'auto' : 'none'} aria-label="Reproducir"
+        <Flex as="button" type="button" onClick={toggle} pointerEvents={full && !playing ? 'auto' : 'none'} aria-label={t('Reproducir')}
           boxSize={{ base: '56px', lg: '80px' }} borderRadius="full" bg="brand.white" color="brand.dark" align="center" justify="center">
           <Box as={FiPlay} fontSize={{ base: '22px', lg: '30px' }} ml="4px" />
         </Flex>
@@ -212,6 +216,7 @@ export function HighlightPlayer({ player, radius = '16px', showChapters = true, 
 
 // ── Tarjeta de reel (Instagram) ────────────────────────────────
 export function ReelCard({ video, index = 0, onOpen, tilt = 0, ...rest }) {
+  const t = useT()
   const ready = Boolean(video.instagramId)
   return (
     <Box className="reel-card" role="group" cursor={ready ? 'pointer' : 'default'} position="relative"
@@ -225,7 +230,7 @@ export function ReelCard({ video, index = 0, onOpen, tilt = 0, ...rest }) {
           <Flex position="absolute" top={3} left={3} right={3} justify="space-between" align="center">
             <Text fontFamily="mono" fontSize="9px" letterSpacing="0.24em" textTransform="uppercase"
               bg="rgba(0,0,0,0.5)" backdropFilter="blur(6px)" border="1px solid" borderColor="whiteAlpha.400"
-              px="8px" py="4px" borderRadius="5px" color="white">{video.category}</Text>
+              px="8px" py="4px" borderRadius="5px" color="white">{t(video.category)}</Text>
             <Flex boxSize="28px" borderRadius="8px" align="center" justify="center" bg="rgba(0,0,0,0.5)"
               border="1px solid" borderColor="whiteAlpha.400" transition="all 0.3s"
               _groupHover={ready ? { bg: 'brand.white', color: 'brand.dark' } : {}}>
@@ -244,7 +249,7 @@ export function ReelCard({ video, index = 0, onOpen, tilt = 0, ...rest }) {
           <Flex position="absolute" left={4} right={4} bottom={4} align="flex-end" justify="space-between" gap={2}>
             <Box minW={0}>
             
-              <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1} noOfLines={2}>{video.title}</Text>
+              <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1} noOfLines={2}>{t(video.title)}</Text>
             </Box>
             {/* <Text fontFamily="heading" fontSize="3xl" lineHeight={0.8} color="transparent"
               sx={{ WebkitTextStroke: '1px rgba(255,255,255,0.7)' }}>{String(index + 1).padStart(2, '0')}</Text> */}
@@ -257,6 +262,7 @@ export function ReelCard({ video, index = 0, onOpen, tilt = 0, ...rest }) {
 
 // ── Visor del reel ─────────────────────────────────────────────
 export function ReelModal({ video, onClose }) {
+  const t = useT()
   useEffect(() => {
     if (!video) return
     const l = window.__lenis
@@ -271,14 +277,14 @@ export function ReelModal({ video, onClose }) {
         <MotionBox position="fixed" inset={0} zIndex={2000} bg="rgba(5,6,5,0.94)" backdropFilter="blur(12px)"
           display="flex" alignItems="center" justifyContent="center" p={4}
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}>
-          <Box as="button" type="button" position="absolute" top={5} right={5} aria-label="Cerrar" color="white"
+          <Box as="button" type="button" position="absolute" top={5} right={5} aria-label={t('Cerrar')} color="white"
             onClick={onClose} _hover={{ transform: 'rotate(90deg)' }} transition="transform 0.3s">
             <Box as={FiX} fontSize="30px" />
           </Box>
           <MotionBox w="100%" maxW="400px" borderRadius="16px" overflow="hidden" bg="black"
             initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} onClick={(e) => e.stopPropagation()}>
             <AspectRatio ratio={9 / 16}>
-              <Box as="iframe" src={`https://www.instagram.com/${video.instagramType || 'reel'}/${video.instagramId}/embed`} title={video.fullTitle}
+              <Box as="iframe" src={`https://www.instagram.com/${video.instagramType || 'reel'}/${video.instagramId}/embed`} title={t(video.fullTitle)}
                 border="none" scrolling="no" allowFullScreen
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" />
             </AspectRatio>

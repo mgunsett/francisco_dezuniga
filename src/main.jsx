@@ -7,6 +7,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import theme from './theme'
 import App from './App'
+import { LanguageProvider } from './i18n'
 import './styles/globals.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -28,7 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <App />
+        <LanguageProvider>
+          <App />
+        </LanguageProvider>
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>
