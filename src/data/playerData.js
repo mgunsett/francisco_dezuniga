@@ -13,6 +13,8 @@ import polonia from '@assets/polonia.svg'
 import fotoStats from '@assets/foto_stats.webp'
 import logoAer from '@assets/academias/logo_aer.webp'
 import logoTocalli from '@assets/academias/logo_tocalli.webp'
+import highlightsVideo from '@assets/videos/highlights.mp4'
+import highlightsPoster from '@assets/highlights_poster.webp'
 import listaBuenaFe from '@assets/docs/lista_buena_fe_sudamericana.webp'
 
 import argentina from '@assets/argentina.webp'
@@ -145,41 +147,32 @@ export const playerData = {
     { year: '2025', names: 'Fernando Escobar',                     role: 'Entrenador de arqueros Sub-20 · Selección Argentina' },
   ],
 
+  // Video principal de la sección Highlights (compilación propia, 16:9)
+  highlight: {
+    src: highlightsVideo,
+    poster: highlightsPoster,
+    title: 'Highlights 2026',
+    subtitle: 'Atajadas · Juego con los pies · Repeticiones',
+    duration: '2:22',
+    // adelanto que se reproduce al pasar el mouse por la portada (segundos)
+    preview: { start: 109, end: 121 },
+    chapters: [
+      { t: 4,   label: 'Atajadas' },
+      { t: 65,  label: 'Juego con los pies' },
+      { t: 88,  label: 'Tiro libre', replay: true },
+      { t: 98,  label: 'Tiro libre', replay: true },
+      { t: 109, label: 'Reacción en el área', replay: true },
+      { t: 126, label: 'Mano a mano', replay: true },
+    ],
+  },
+
+  // Videos de Instagram (debajo del video principal).
+  // instagramId: código de la publicación. En https://www.instagram.com/reel/DXXXXXXXXXX/ es "DXXXXXXXXXX"
+  // instagramType: 'reel' o 'p' según el link (/reel/... o /p/...)
   videos: [
-    {
-      id: 'v1',
-      // instagramId: código del reel. En https://www.instagram.com/reel/DXXXXXXXXXX/ es "DXXXXXXXXXX"
-      instagramId: 'DXvelmBtUmJ',
-      title: 'Libertadores 26',
-      fullTitle: 'Lisandro Alzugaray | Jugadas destacadas 2026',
-      season: 'GOL VS NACIONAL',
-      league: 'CONMEBOL Libertadores 2026',
-      thumbnail: image7,
-      cover: image7,
-      category: 'Highlights',
-    },
-    {
-      id: 'v2',
-      instagramId: 'DWEUMU0AL2f',
-      title: '2026',
-      fullTitle: 'Lisandro Alzugaray | Compilado de goles',
-      season: 'Compilado',
-      league: 'CONMEBOL Libertadores 2025',
-      thumbnail: image1,
-      cover: image1,
-      category: 'Goles',
-    },
-    {
-      id: 'v3',
-      instagramId: 'DTlGApKkWzo',
-      title: 'Temporada 2025',
-      fullTitle: 'Lisandro Alzugaray | Asistencias y juego',
-      season: 'Liga de Quito',
-      league: 'Liga de Quito',
-      thumbnail: image4,
-      cover: image4,
-      category: 'Asistencias',
-    },
+    { id: 'v1', instagramId: 'DQNKi2eEWAs', instagramType: 'p',    title: 'Entrenamiento Primera División', fullTitle: 'Francisco de Zúñiga | Entrenamiento Primera División', category: 'Entrenamiento', cover: fotoHeroBg },
+    { id: 'v2', instagramId: 'DXFlI8RkZG2', instagramType: 'reel', title: 'Partido vs Barracas',            fullTitle: 'Francisco de Zúñiga | Partido vs Barracas',            category: 'Partido',       cover: fotoHero },
+    { id: 'v3', instagramId: 'DXAqEJQES9Q', instagramType: 'reel', title: 'Entrada en Calor',               fullTitle: 'Francisco de Zúñiga | Entrada en Calor',               category: 'Previa',        cover: fotoHeroBg1 },
   ],
 
   press: [
