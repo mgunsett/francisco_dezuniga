@@ -5,12 +5,13 @@
 // Animación SUTIL: reveal con GSAP + número fantasma con parallax.
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from 'react'
-import { Box, Flex, Grid, Text } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { FaInstagram } from 'react-icons/fa'
 import { playerData } from '../../data/playerData'
 import { Eyebrow, HighlightPlayer, ReelCard, ReelModal, ReelSlider, usePlayer, reduceMotion } from './videoShared'
+import { VerticalTitleRow } from './VerticalTitleRow'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -52,32 +53,22 @@ export default function VideosSection() {
 
         <Box className="va-player">
           <HighlightPlayer player={player} />
-          <Flex justify="space-between" align="center" mt={4} gap={4} wrap="wrap">
-            <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '3xl' }} lineHeight={1}>
-              {hl.title} <Box as="span" color="brand.gray">· {hl.duration}</Box>
-            </Text>
-            <Flex gap={2} wrap="wrap">
-              {hl.chapters.filter((c) => c.replay).map((c, i) => (
-                <Box key={c.t} as="button" type="button" onClick={() => player.seek(c.t)}
-                  fontFamily="mono" fontSize="10px" letterSpacing="0.16em" textTransform="uppercase"
-                  border="1px solid" borderColor="whiteAlpha.300" borderRadius="full" px={3} py={1.5}
-                  _hover={{ borderColor: 'brand.white' }} transition="border-color 0.3s">
-                  <Box as="span" color="brand.greenBright">●</Box> {c.label} {String(i + 1).padStart(2, '0')}
-                </Box>
-              ))}
-            </Flex>
-          </Flex>
         </Box>
 
         <Box className="va-reels" mt={{ base: 14, lg: 20 }}>
-          <Flex align="center" gap={3} mb={{ base: 5, lg: 7 }}>
-            <Box as={FaInstagram} fontSize="18px" />
-            <Text fontFamily="heading" fontSize={{ base: '3xl', lg: '4xl' }} lineHeight={1}>En Instagram</Text>
-          </Flex>
-          <Grid display={{ base: 'none', md: 'grid' }} templateColumns="repeat(3, 1fr)" gap={{ md: 5, lg: 10 }} maxW="1040px" mx="auto">
+          <VerticalTitleRow title="En Instagram" icon={FaInstagram} itemRatio={16 / 9} titleClassName="reel-card"
+            display={{ base: 'none', md: 'grid' }} gap={{ md: 5, lg: 10 }}>
             {playerData.videos.map((v, i) => <ReelCard key={v.id} video={v} index={i} onOpen={setOpen} />)}
-          </Grid>
-          <Box display={{ base: 'block', md: 'none' }}><ReelSlider videos={playerData.videos} onOpen={setOpen} /></Box>
+          </VerticalTitleRow>
+
+          {/* Mobile: título horizontal + slider */}
+          <Box display={{ base: 'block', md: 'none' }}>
+            <Flex align="center" gap={3} mb={5}>
+              <Box as={FaInstagram} fontSize="18px" />
+              <Text fontFamily="heading" fontSize="3xl" lineHeight={1}>En Instagram</Text>
+            </Flex>
+            <ReelSlider videos={playerData.videos} onOpen={setOpen} />
+          </Box>
         </Box>
       </Box>
       <ReelModal video={open} onClose={() => setOpen(null)} />
