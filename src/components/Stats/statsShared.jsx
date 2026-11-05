@@ -27,7 +27,7 @@ export function BlockTitle({ eyebrow, title, right, ...rest }) {
     <Flex align="flex-end" justify="space-between" gap={4} mb={{ base: 5, lg: 7 }} {...rest}>
       <Box>
         <Flex align="center" gap={3} mb={1}>
-          <Box w="22px" h="2px" bg="brand.greenBright" />
+          
           <Eyebrow>{eyebrow}</Eyebrow>
         </Flex>
         <Text as="h3" fontFamily="heading" fontSize={{ base: '4xl', lg: '5xl' }} lineHeight={1}>
