@@ -251,8 +251,8 @@ export function ReelCard({ video, index = 0, onOpen, tilt = 0, ...rest }) {
           <Flex position="absolute" left={4} right={4} bottom={4} align="flex-end" justify="space-between" gap={2}>
             <Box minW={0}>
               <Text fontFamily="mono" fontSize="9px" letterSpacing="0.22em" textTransform="uppercase"
-                color={ready ? 'brand.greenBright' : 'brand.gray2'}>{ready ? 'Ver en Instagram' : video.season}</Text>
-              <Text fontFamily="heading" fontSize="2xl" lineHeight={1} noOfLines={1}>{video.title}</Text>
+                color={ready ? 'brand.greenBright' : 'brand.gray2'}>{ready ? 'Ver en Instagram' : 'Próximamente'}</Text>
+              <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1} noOfLines={2}>{video.title}</Text>
             </Box>
             <Text fontFamily="heading" fontSize="3xl" lineHeight={0.8} color="transparent"
               sx={{ WebkitTextStroke: '1px rgba(255,255,255,0.7)' }}>{String(index + 1).padStart(2, '0')}</Text>
@@ -286,7 +286,7 @@ export function ReelModal({ video, onClose }) {
           <MotionBox w="100%" maxW="400px" borderRadius="16px" overflow="hidden" bg="black"
             initial={{ scale: 0.95 }} animate={{ scale: 1 }} exit={{ scale: 0.95 }} onClick={(e) => e.stopPropagation()}>
             <AspectRatio ratio={9 / 16}>
-              <Box as="iframe" src={`https://www.instagram.com/reel/${video.instagramId}/embed`} title={video.fullTitle}
+              <Box as="iframe" src={`https://www.instagram.com/${video.instagramType || 'reel'}/${video.instagramId}/embed`} title={video.fullTitle}
                 border="none" scrolling="no" allowFullScreen
                 allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" />
             </AspectRatio>

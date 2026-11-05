@@ -180,13 +180,13 @@ export const playerData = {
     ],
   },
 
-  // Reels de Instagram (debajo del video principal).
-  // instagramId: código del reel. En https://www.instagram.com/reel/DXXXXXXXXXX/ es "DXXXXXXXXXX"
-  // PLACEHOLDERS: faltan los links reales
+  // Videos de Instagram (debajo del video principal).
+  // instagramId: código de la publicación. En https://www.instagram.com/reel/DXXXXXXXXXX/ es "DXXXXXXXXXX"
+  // instagramType: 'reel' o 'p' según el link (/reel/... o /p/...)
   videos: [
-    { id: 'v1', instagramId: null, title: 'Reel 01', fullTitle: 'Francisco de Zúñiga | Reel 01', season: 'Próximamente', category: 'Atajadas', cover: fotoHeroBg },
-    { id: 'v2', instagramId: null, title: 'Reel 02', fullTitle: 'Francisco de Zúñiga | Reel 02', season: 'Próximamente', category: 'Entrenamiento', cover: fotoHero },
-    { id: 'v3', instagramId: null, title: 'Reel 03', fullTitle: 'Francisco de Zúñiga | Reel 03', season: 'Próximamente', category: 'Partido', cover: fotoHeroBg1 },
+    { id: 'v1', instagramId: 'DQNKi2eEWAs', instagramType: 'p',    title: 'Entrenamiento Primera División', fullTitle: 'Francisco de Zúñiga | Entrenamiento Primera División', category: 'Entrenamiento', cover: fotoHeroBg },
+    { id: 'v2', instagramId: 'DXFlI8RkZG2', instagramType: 'reel', title: 'Partido vs Barracas',            fullTitle: 'Francisco de Zúñiga | Partido vs Barracas',            category: 'Partido',       cover: fotoHero },
+    { id: 'v3', instagramId: 'DXAqEJQES9Q', instagramType: 'reel', title: 'Entrada en Calor',               fullTitle: 'Francisco de Zúñiga | Entrada en Calor',               category: 'Previa',        cover: fotoHeroBg1 },
   ],
 
   press: [
