@@ -169,4 +169,6 @@ export default {
   "Inscripto por {club} en la lista de buena fe para la": "Inserito dal {club} nella lista ufficiale per la",
   "MEDIA": "Media",
   "Primera División y titular Torneo Proyección (2026)": "Prima squadra e titolare nel Torneo Proyección (2026)",
+  "Francisco de Zúñiga | Arquero · Deportivo Riestra": "Francisco de Zúñiga | Portiere · Deportivo Riestra",
+  "Sitio oficial de Francisco de Zúñiga, arquero argentino clase 2008 de Deportivo Riestra (Liga Profesional AFA) con pasaporte UE. Estadísticas, highlights y contacto.": "Sito ufficiale di Francisco de Zúñiga, portiere argentino classe 2008 del Deportivo Riestra (Liga Profesional AFA) con passaporto UE. Statistiche, highlights e contatti.",
 }

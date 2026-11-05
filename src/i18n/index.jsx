@@ -18,6 +18,10 @@ export const LANGS = [
 const DICTS = { es: {}, en, it, fr }
 const STORAGE_KEY = 'fz-lang'
 
+// Título y descripción de la pestaña según el idioma (SEO)
+const SEO_TITLE = 'Francisco de Zúñiga | Arquero · Deportivo Riestra'
+const SEO_DESC = 'Sitio oficial de Francisco de Zúñiga, arquero argentino clase 2008 de Deportivo Riestra (Liga Profesional AFA) con pasaporte UE. Estadísticas, highlights y contacto.'
+
 const format = (str, vars) =>
   vars ? str.replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m)) : str
 
@@ -51,7 +55,11 @@ export function LanguageProvider({ children }) {
     setLangState(l)
     try { localStorage.setItem(STORAGE_KEY, l) } catch { /* ignore */ }
   }, [])
-  useEffect(() => { document.documentElement.lang = lang }, [lang])
+  useEffect(() => {
+    document.documentElement.lang = lang
+    document.title = translate(lang, SEO_TITLE)
+    document.querySelector('meta[name="description"]')?.setAttribute('content', translate(lang, SEO_DESC))
+  }, [lang])
   const value = useMemo(() => ({
     lang,
     setLang,
