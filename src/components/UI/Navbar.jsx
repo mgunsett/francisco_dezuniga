@@ -3,29 +3,25 @@
 // Logo a la izquierda; selector de idioma y botón redondo MENÚ a la
 // derecha, siempre visibles durante el scroll. El menú se abre con un
 // círculo que crece desde el botón y muestra links gigantes (la sección
-// activa en blanco); al pasar el mouse, una foto sigue al cursor.
+// activa en blanco).
 // ─────────────────────────────────────────────────────────────
 import { useEffect, useRef, useState } from 'react'
-import { Box, Flex, Text, Image } from '@chakra-ui/react'
+import { Box, Flex, Text } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { FaWhatsapp, FaInstagram, FaEnvelope } from 'react-icons/fa'
 import { playerData } from '../../data/playerData'
 import { links, scrollToSection, useActiveSection, useScrollState, useLockScroll, LangSwitch, Logo } from './navShared'
 import { useT } from '../../i18n'
 
-// foto que acompaña a cada link del menú
-const previewPhotos = [playerData.image, playerData.gallery[2]?.src, playerData.highlight.poster, playerData.gallery[4]?.src, playerData.gallery[10]?.src]
 
 export default function Navbar() {
   const t = useT()
   const [open, setOpen] = useState(false)
-  const [hover, setHover] = useState(null)
   const active = useActiveSection()
   const { scrolled } = useScrollState(60)
   useLockScroll(open)
   const overlay = useRef(null)
   const btn = useRef(null)
-  const cursor = useRef(null)
   const bar = useRef(null)
 
   useEffect(() => { gsap.fromTo(bar.current, { y: -40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: 'expo.out', delay: 0.6 }) }, [])
@@ -48,10 +44,6 @@ export default function Navbar() {
     }
   }, [open])
 
-  const onMove = (e) => {
-    if (!cursor.current) return
-    gsap.to(cursor.current, { x: e.clientX, y: e.clientY, duration: 0.6, ease: 'power3.out' })
-  }
   const go = (e, href) => { e.preventDefault(); setOpen(false); setTimeout(() => scrollToSection(href), 450) }
   const me = playerData.contact.people[0]
   const ig = playerData.socialMedia.find((s) => s.label === 'Instagram')
@@ -84,28 +76,18 @@ export default function Navbar() {
       {/* Menú a pantalla completa */}
       <Flex ref={overlay} position="fixed" inset={0} zIndex={1000} bg="#060706" display="none" direction="column"
         justify="space-between" px={{ base: 5, md: 10, lg: 16 }} pt={{ base: 24, lg: 28 }} pb={{ base: 6, lg: 10 }}
-        onMouseMove={onMove} style={{ clipPath: 'circle(0px at 100% 0%)' }}>
-        {/* foto que sigue al cursor */}
-        <Box ref={cursor} position="fixed" top={0} left={0} w="260px" h="340px" ml="-130px" mt="-170px" pointerEvents="none"
-          borderRadius="12px" overflow="hidden" zIndex={0} display={{ base: 'none', lg: 'block' }}
-          opacity={hover === null ? 0 : 1} transform="scale(1)" transition="opacity 0.3s">
-          {previewPhotos.map((src, i) => src && (
-            <Image key={i} src={src} alt="" position="absolute" inset={0} w="100%" h="100%" objectFit="cover"
-              opacity={hover === i ? 1 : 0} transition="opacity 0.35s" />
-          ))}
-        </Box>
+        style={{ clipPath: 'circle(0px at 100% 0%)' }}>
 
-        <Box position="relative" zIndex={1}>
+        <Flex position="relative" zIndex={1} flex={1} direction="column" justify="center" pb={{ base: 4, lg: 6 }}>
           {links.map((l, i) => {
             const on = active === l.href
             return (
               <Box key={l.href} overflow="hidden">
-                <Flex className="nc-link" as="a" href={l.href} onClick={(e) => go(e, l.href)} align="baseline" gap={{ base: 3, lg: 6 }}
-                  onMouseEnter={() => setHover(i)} onMouseLeave={() => setHover(null)} role="group" w="fit-content">
+                <Flex className="nc-link" as="a" href={l.href} onClick={(e) => go(e, l.href)} align="baseline" gap={{ base: 3, lg: 6 }} role="group" w="fit-content">
                   <Text fontFamily="mono" fontSize={{ base: '11px', lg: 'sm' }} color={on ? 'brand.greenBright' : 'brand.gray'}>
                     {String(i + 1).padStart(2, '0')}
                   </Text>
-                  <Text fontFamily="heading" fontSize={{ base: '16vw', md: '11vw', lg: '8.5vw' }} lineHeight={0.92}
+                  <Text fontFamily="heading" fontSize={{ base: '12vw', md: '8vw', lg: '6vw' }} lineHeight={0.95}
                     color={on ? 'white' : 'transparent'} transition="all 0.35s"
                     sx={on ? {} : { WebkitTextStroke: { base: '1px rgba(255,255,255,0.75)', lg: '1.5px rgba(255,255,255,0.75)' } }}
                     _groupHover={{ color: 'white', transform: 'translateX(14px)' }}>
@@ -115,7 +97,7 @@ export default function Navbar() {
               </Box>
             )
           })}
-        </Box>
+        </Flex>
 
         <Flex className="nc-foot" position="relative" zIndex={1} justify="space-between" align={{ base: 'flex-start', md: 'flex-end' }}
           direction={{ base: 'column', md: 'row' }} gap={4} borderTop="1px solid" borderColor="whiteAlpha.200" pt={5}>
