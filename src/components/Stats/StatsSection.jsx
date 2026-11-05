@@ -1,557 +1,284 @@
-import { useRef, useEffect } from 'react'
-import {
-  Box, Grid, GridItem, Text, Flex, VStack, HStack, Image, IconButton, useToken,
-} from '@chakra-ui/react'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import useScrubReveal from '../../hooks/useScrubReveal'
+// ─────────────────────────────────────────────────────────────
+// ESTADÍSTICAS · "Informe de scouting"
+// Foto del jugador con la valoración como insignia, perfil y barras
+// segmentadas tipo informe (escala 1–10). Lista de buena fe de la
+// CONMEBOL Sudamericana como documento. Trayectoria en línea
+// de tiempo vertical: clubes de un lado, formación del otro.
+// Animación MEDIA con Framer Motion (whileInView).
+// ─────────────────────────────────────────────────────────────
+import { Box, Grid, Text, Flex, Image, VStack, Button, useDisclosure } from '@chakra-ui/react'
+import { motion } from 'framer-motion'
 import { playerData } from '../../data/playerData'
-import { RadarStats } from './RadarStats.jsx'
+import {
+  SectionShell, BlockTitle, Eyebrow, overallOf,
+  BuenaFeImage, BuenaFeLens, BuenaFeLightbox, buenaFeBox,
+} from './statsShared'
 
-gsap.registerPlugin(ScrollTrigger)
+const MotionBox = motion(Box)
+const ease = [0.16, 1, 0.3, 1]
+const inView = { initial: 'hidden', whileInView: 'show', viewport: { once: true, amount: 0.3 } }
 
-// Cambiá a false para volver al diseño original (bento de 3 columnas)
-const USE_RADAR = true
-
-function BioCard() {
-  const BIO = [
-  { label: 'Edad', key: 'age' },
-  { label: 'Altura', key: 'height' },
-  { label: 'Peso', key: 'weight' },
-  { label: 'Pie', key: 'foot' },
-  { label: 'Nacimiento', key: 'birthDate' },
-  { label: 'Lugar', key: 'birthPlace' },
-]
+// Foto del jugador en lugar del escudo, con la valoración como insignia
+function PlayerRating({ value }) {
   return (
-          <Box>
-            <Text
-                fontFamily="mono"
-                fontSize="11px"
-                letterSpacing="0.28em"
-                textTransform="uppercase"
-                color="brand.boneWarm"
-                mb={5}
-              >
-                Datos personales
-              </Text>
-            <Box
-              bg="brand.dark"
-              border="1px solid"
-              borderColor="brand.amber"
-              borderRadius={'10px'}
-              p={{ base: 5, md: 6 }}
-              h="90%"
-              position="relative"
-            >
-              <VStack align="stretch" spacing={3}>
-                {BIO.map((row) => (
-                  <Flex
-                    key={row.key}
-                    justify="space-between"
-                    align="center"
-                    borderBottom="1px solid"
-                    borderColor="whiteAlpha.50"
-                    pb={3}
-                    transition="all 0.3s ease"
-                    _hover={{ 
-                      borderColor: 'brand.brown',
-                      transform: 'translateY(-2px)',
-                    }}
-                  >
-                    <Text
-                      fontFamily="mono"
-                      fontSize="11px"
-                      letterSpacing="0.18em"
-                      textTransform="uppercase"
-                      color="whiteAlpha.600"
-                    >
-                      {row.label}
-                    </Text>
-                    <Text fontFamily="mono" fontSize="sm" fontWeight={500}>
-                      {playerData[row.key]}
-                    </Text>
-                  </Flex>
-                ))}
-              </VStack>
-            </Box>
-          </Box>
-
+    <MotionBox position="relative" flexShrink={0} w={{ base: '100%', md: '270px', lg: '300px' }}
+      h={{ base: '420px', md: '500px', lg: '540px' }}
+      {...inView} variants={{ hidden: { opacity: 0, y: 50 }, show: { opacity: 1, y: 0, transition: { duration: 1, ease } } }}>
+      {/* marco con doble borde (guiño al escudo de Riestra) */}
+      <Box position="absolute" left="50%" transform="translateX(-50%)" bottom={0} w={{ base: '78%', md: '100%' }} h="78%"
+        border="1px solid" borderColor="whiteAlpha.400" borderRadius="16px 16px 60px 60px"
+        bg="linear-gradient(to bottom, rgba(255,255,255,0.05), rgba(52,184,110,0.10))">
+        <Box position="absolute" inset="8px" border="1px solid" borderColor="whiteAlpha.200" borderRadius="10px 10px 52px 52px" />
+      </Box>
+      <Image src={playerData.statsImage} alt={`${playerData.displayName}, arquero de Deportivo Riestra`}
+        position="absolute" bottom={0} left="50%" transform="translateX(-50%)" h="100%" w="auto" maxW="none"
+        objectFit="contain" loading="lazy" draggable={false}
+        sx={{ maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)', WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)' }} />
+      {/* insignia de valoración */}
+      <MotionBox position="absolute" bottom={{ base: '18px', md: '22px' }} right={{ base: '12%', md: '-14px' }}
+        bg="brand.white" color="brand.black" borderRadius="12px" px={4} pt={2} pb={2.5} textAlign="center"
+        boxShadow="0 14px 36px rgba(0,0,0,0.55)"
+        {...inView} variants={{ hidden: { opacity: 0, scale: 0.6 }, show: { opacity: 1, scale: 1, transition: { duration: 0.6, ease, delay: 0.6 } } }}>
+        <Text fontFamily="heading" fontSize={{ base: '44px', lg: '52px' }} lineHeight={0.9}>{value}</Text>
+        <Text fontFamily="mono" fontSize="9px" fontWeight="700" letterSpacing="0.2em" textTransform="uppercase">Valoración</Text>
+        <Box h="2px" bg="brand.greenBright" mt={1.5} />
+      </MotionBox>
+    </MotionBox>
   )
 }
 
-function SeasonCards() {
-  const cardRefs = useRef([])
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      cardRefs.current.forEach((el, i) => {
-        if (!el) return
-        gsap.fromTo(el,
-          { y: 28, opacity: 0 },
-          {
-            y: 0, opacity: 1,
-            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-            duration: 0.7, delay: i * 0.1, ease: 'power3.out',
-          }
-        )
-      })
-    })
-    return () => ctx.revert()
-  }, [])
+function SegmentBar({ label, value, index }) {
+  const score = value / 10
+  return (
+    <MotionBox {...inView}
+      variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05, delayChildren: index * 0.08 } } }}>
+      <Flex justify="space-between" align="baseline" mb={2}>
+        <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }} letterSpacing="wider" textTransform="uppercase">
+          {label}
+        </Text>
+        <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1} sx={{ fontVariantNumeric: 'tabular-nums' }}>
+          {score.toFixed(1)}<Box as="span" fontSize="sm" color="brand.gray"> / 10</Box>
+        </Text>
+      </Flex>
+      <Grid templateColumns="repeat(10, 1fr)" gap={{ base: '3px', lg: '4px' }}>
+        {Array.from({ length: 10 }).map((_, i) => {
+          const fill = Math.max(0, Math.min(1, score - i))
+          return (
+            <Box key={i} h={{ base: '10px', lg: '12px' }} bg="rgba(255,255,255,0.12)" borderRadius="2px" overflow="hidden" position="relative">
+              <MotionBox position="absolute" inset={0} bg={i === Math.ceil(score) - 1 ? 'brand.greenBright' : 'brand.white'}
+                transformOrigin="left center"
+                variants={{ hidden: { scaleX: 0 }, show: { scaleX: fill, transition: { duration: 0.45, ease } } }} />
+            </Box>
+          )
+        })}
+      </Grid>
+    </MotionBox>
+  )
+}
+
+function TimelineItem({ item, side }) {
+  const isClub = item.kind === 'club'
+  return (
+    <MotionBox {...inView}
+      variants={{ hidden: { opacity: 0, x: side === 'left' ? -30 : 30 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease } } }}
+      border="1px solid" borderColor={item.current ? 'brand.white' : 'whiteAlpha.300'} borderRadius="12px"
+      p={{ base: 4, lg: 5 }} bg="brand.dark" textAlign={{ base: 'left', lg: side === 'left' ? 'right' : 'left' }}>
+      <Flex gap={4} align="center" direction={{ base: 'row', lg: side === 'left' ? 'row-reverse' : 'row' }}>
+        {item.logo ? (
+          <Flex boxSize="56px" flexShrink={0} borderRadius="full" overflow="hidden" align="center" justify="center"
+            bg={isClub ? 'brand.white' : 'transparent'} border="1px solid" borderColor={isClub ? 'brand.white' : 'whiteAlpha.400'}>
+            <Image src={item.logo} alt={`Logo de ${item.name}`} objectFit={isClub ? 'contain' : 'cover'}
+              boxSize={isClub ? '38px' : '100%'} loading="lazy" />
+          </Flex>
+        ) : (
+          <Flex boxSize="56px" flexShrink={0} borderRadius="full" border="1px solid" borderColor="whiteAlpha.500"
+            align="center" justify="center">
+            <Text fontFamily="heading" fontSize="md" letterSpacing="wider">{item.short}</Text>
+          </Flex>
+        )}
+        <Box minW={0}>
+          <Text fontFamily="mono" fontSize="10px" letterSpacing="0.2em" textTransform="uppercase"
+            color={item.current ? 'brand.greenBright' : 'brand.gray'}>
+            {item.years} · {isClub ? 'Club' : 'Formación'}
+          </Text>
+          <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '3xl' }} lineHeight={1}>{item.name}</Text>
+        </Box>
+      </Flex>
+      <VStack align={{ base: 'flex-start', lg: side === 'left' ? 'flex-end' : 'flex-start' }} spacing={1} mt={3}>
+        {item.lines.map((l) => (
+          <Text key={l} fontFamily="mono" fontSize="xs" color="brand.gray2">{l}</Text>
+        ))}
+      </VStack>
+    </MotionBox>
+  )
+}
+
+function CareerTimeline() {
+  const clubs = playerData.clubs.map((c, i) => ({
+    kind: 'club', name: c.name, years: c.years, logo: c.logo, current: i === 0,
+    lines: [].concat(c.info).filter(Boolean), sort: c.to * 10 + c.from / 1000,
+  }))
+  const academies = playerData.academies.map((a) => ({
+    kind: 'academy', name: a.name, short: a.short, years: a.years, logo: a.logo,
+    lines: [`Referencias: ${a.reference}`], sort: a.to * 10 + a.from / 1000,
+  }))
+  const coaches = playerData.coaches
 
   return (
-    <Box mx={2}>
-      <Text
-        fontFamily="mono"
-        fontSize="11px"
-        letterSpacing="0.28em"
-        textTransform="uppercase"
-        color="brand.boneWarm"
-        mb={5}
-      >
-        última temporada
-      </Text>
-      <Grid templateColumns="repeat(2, 1fr)" gap={3}>
-        {playerData.seasonStats.map((s, i) => (
-          <Box
-            key={s.label}
-            ref={(el) => (cardRefs.current[i] = el)}
-            border="1px solid"
-            borderColor="whiteAlpha.100"
-            borderRadius={'10px'}
-            p={5}
-            position="relative"
-            cursor="default"
-            transition="border-color 0.3s, background 0.3s"
-            _hover={{
-              borderColor: 'brand.brown',
-              bg: 'rgba(19, 67, 139, 0.05)',
-            }}
-            _before={{
-              content: '""', position: 'absolute', bottom: '0px', left: '10px',
-              w: '0', h: '2px', bg: 'brand.brown', borderRadius: 'full',
-              transition: 'width 0.35s',
-            }}
-            sx={{ '&:hover::before': { width: 'calc(100% - 20px)' } }}
-          >
-            <Text fontFamily="heading" fontSize="4xl" color="white" lineHeight={1} mb={1}>
-              {s.value}
-            </Text>
-            <Text fontFamily="mono" fontSize="10px" color="brand.gray"
-              textTransform="uppercase" letterSpacing="widest">
-              {s.label}
-            </Text>
-          </Box>
-        ))}
+    <Box>
+      <BlockTitle eyebrow="Trayectoria" title="Clubes y formación" />
+      <Grid templateColumns={{ base: '1fr', lg: '1fr 56px 1fr' }} gap={{ base: 4, lg: 0 }} position="relative">
+        {/* línea central */}
+        <Box display={{ base: 'none', lg: 'block' }} position="absolute" left="50%" top={0} bottom={0} w="1px"
+          bg="linear-gradient(to bottom, #fff, rgba(255,255,255,0.1))" />
+        {/* Columna formación (izquierda) */}
+        <VStack spacing={4} align="stretch" order={{ base: 2, lg: 1 }} pt={{ lg: 16 }}>
+          <Eyebrow display={{ base: 'block', lg: 'none' }} mt={4}>Formación</Eyebrow>
+          {academies.map((a) => <TimelineItem key={a.name} item={a} side="left" />)}
+          <MotionBox {...inView}
+            variants={{ hidden: { opacity: 0, x: -30 }, show: { opacity: 1, x: 0, transition: { duration: 0.8, ease } } }}
+            p={{ base: 4, lg: 5 }} textAlign={{ base: 'left', lg: 'right' }}>
+            <Eyebrow mb={3}>Entrenadores de arqueros</Eyebrow>
+            <VStack align={{ base: 'flex-start', lg: 'flex-end' }} spacing={3}>
+              {coaches.map((c) => (
+                <Box key={c.names}>
+                  <Text fontFamily="mono" fontWeight="700" fontSize="sm">
+                    <Box as="span" color="brand.greenBright">{c.year}</Box> · {c.names}
+                  </Text>
+                  <Text fontFamily="mono" fontSize="xs" color="brand.gray">{c.role}</Text>
+                </Box>
+              ))}
+            </VStack>
+          </MotionBox>
+        </VStack>
+        {/* eje central */}
+        <Box display={{ base: 'none', lg: 'block' }} order={2} />
+        {/* Columna clubes (derecha) */}
+        <VStack spacing={4} align="stretch" order={{ base: 1, lg: 3 }}>
+          <Eyebrow display={{ base: 'block', lg: 'none' }}>Clubes</Eyebrow>
+          {clubs.map((c) => <TimelineItem key={c.name} item={c} side="right" />)}
+        </VStack>
       </Grid>
     </Box>
   )
 }
 
-function StatBars() {
-  const barRefs  = useRef([])
-  const numRefs  = useRef([])
-  const [accentDeep, accentMid] = useToken('colors', ['brand.accentDeep', 'brand.accentMid'])
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      playerData.stats.forEach((s, i) => {
-        const bar = barRefs.current[i]
-        const num = numRefs.current[i]
-        if (!bar) return
-        const obj = { val: 0 }
-        gsap.fromTo(
-          bar,
-          { scaleX: 0 },
-          {
-            scaleX: s.value / 100,
-            ease: 'power2.out',
-            scrollTrigger: { trigger: bar, start: 'top 88%', once: true },
-            duration: 1.2,
-            delay: i * 0.08,
-          }
-        )
-        gsap.to(obj, {
-          val: s.value,
-          ease: 'power2.out',
-          duration: 1.2,
-          delay: i * 0.08,
-          scrollTrigger: { trigger: bar, start: 'top 88%', once: true },
-          onUpdate() { if (num) num.textContent = Math.round(obj.val) },
-        })
-      })
-    })
-    return () => ctx.revert()
-  }, [])
-
+// Documento: la lista inclinada como hoja de un dossier, con un
+// trazo de resaltador que pasa sobre su nombre y un sello
+function BuenaFeDossier() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const bf = playerData.buenaFe
+  const b = buenaFeBox()
   return (
-    <Box>
-      <Text
-        fontFamily="mono"
-        fontSize="11px"
-        letterSpacing="0.28em"
-        textTransform="uppercase"
-        color="brand.boneWarm"
-        mb={5}
-      >
-        Hablidades
-      </Text>
-      <Box
-        border="1px solid"
-        borderColor="whiteAlpha.100"
-        borderRadius={'10px'}
-        p={6}
-        position="relative"
-        _before={{
-          content: '""', position: 'absolute', top: 0, left: 2,
-          w: '32px', h: '2px', bg: 'brand.brown',
-        }}
-      >
-        <VStack spacing={4} align="stretch">
-          {playerData.stats.map((s, i) => (
-            <Box key={s.label}>
-              <Flex justify="space-between" mb={1.5}>
-                <Text fontFamily="mono" fontSize="11px" color="white"
-                  textTransform="uppercase" letterSpacing="wider">
-                  {s.label}
-                </Text>
-                <Text ref={(el) => (numRefs.current[i] = el)}
-                  fontFamily="heading" fontSize="sm" color="brand.brownLight">
-                  0
-                </Text>
-              </Flex>
-              <Box h="3px" bg="rgba(255,255,255,0.08)" position="relative">
-                <Box
-                  ref={(el) => (barRefs.current[i] = el)}
-                  position="absolute"
-                  top={0} left={0}
-                  w="100%" h="100%"
-                  bg={`linear-gradient(to right, ${accentDeep}, ${accentMid})`}
-                  transformOrigin="left"
-                  transform="scaleX(0)"
-                />
-              </Box>
+    <Grid templateColumns={{ base: '1fr', lg: '1fr 0.9fr' }} gap={{ base: 10, lg: 16 }} alignItems="center">
+      <Box order={{ base: 2, lg: 1 }}>
+        <BlockTitle eyebrow="Documento oficial" title="Lista de buena fe" mb={{ base: 4, lg: 5 }} />
+        <MotionBox {...inView} variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } } }}>
+          <Text fontFamily="mono" fontSize={{ base: 'sm', lg: 'md' }} color="brand.gray2" maxW="520px" lineHeight={1.7}>
+            Deportivo Riestra lo inscribió en su lista de buena fe para la{' '}
+            <Box as="span" color="brand.white" fontWeight="700">{bf.competition}</Box>, con el dorsal {bf.dorsal}.
+          </Text>
+        </MotionBox>
+        <MotionBox mt={{ base: 6, lg: 8 }} maxW="520px" {...inView}
+          variants={{ hidden: { opacity: 0, scale: 0.96 }, show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease, delay: 0.15 } } }}>
+          <Eyebrow fontSize="9px" mb={2}>Extracto</Eyebrow>
+          <BuenaFeLens />
+        </MotionBox>
+        <Grid templateColumns="1fr 1fr" gap={0} mt={{ base: 6, lg: 8 }} maxW="520px" border="1px solid" borderColor="whiteAlpha.300" borderRadius="10px">
+          {[['Competencia', 'CONMEBOL Sudamericana'], ['Temporada', '2026'], ['Club', bf.club], ['Dorsal', bf.dorsal]].map(([k, v], i) => (
+            <Box key={k} p={4} borderLeft={i % 2 ? '1px solid' : 'none'} borderTop={i > 1 ? '1px solid' : 'none'} borderColor="whiteAlpha.300">
+              <Eyebrow fontSize="9px">{k}</Eyebrow>
+              <Text fontFamily="heading" fontSize={{ base: 'xl', lg: '2xl' }} lineHeight={1.05} mt={1}>{v}</Text>
             </Box>
           ))}
-        </VStack>
+        </Grid>
+        <Button onClick={onOpen} mt={{ base: 6, lg: 8 }} bg="brand.white" color="brand.dark" borderRadius="full"
+          fontFamily="mono" fontSize="xs" letterSpacing="0.2em" textTransform="uppercase" px={6}
+          _hover={{ bg: 'brand.greenBright' }}>
+          Ver documento
+        </Button>
       </Box>
-    </Box>
-  )
-}
 
-function ClubNode({ club, isFirst, isLast, isActive }) {
-  const NODE_W = { base: '180px', md: '220px' }
-  const BADGE = '74px'
-
-  return (
-    <Box
-      w={NODE_W}
-      flexShrink={0}
-      scrollSnapAlign="center"
-      position="relative"
-      pt={8}
-    >
-      {/* Riel + nodo del escudo */}
-      <Flex h={BADGE} align="center" justify="center" position="relative">
-        {/* Línea conectora (segmento por club) */}
-        <Box
-          position="absolute"
-          top="50%"
-          left={isFirst ? '50%' : 0}
-          right={isLast ? '50%' : 0}
-          h="1px"
-          bg="brand.amber"
-          transform="translateY(-50%)"
-        />
-        {/* Tramo recorrido (resaltado hacia el club actual) */}
-        {isFirst && (
-          <Box
-            position="absolute"
-            top="50%"
-            left="50%"
-            right={0}
-            h="1px"
-            bgGradient="linear(to-r, brand.brown, transparent)"
-            transform="translateY(-50%)"
-          />
-        )}
-
-        {/* Escudo */}
-        <Flex
-          boxSize={BADGE}
-          borderRadius="full"
-          align="center"
-          justify="center"
-          position="relative"
-          zIndex={1}
-          bg="brand.brown"
-          border="1px solid"
-          borderColor={'brand.amber'}
-          boxShadow={isActive ? '0 0 0 4px #bda78e, 0 0 26px #bda78e79' : 'none'}
-          transition="border-color 0.35s, box-shadow 0.35s, transform 0.35s"
-          _groupHover={{
-            borderColor: 'brand.amberLight',
-            transform: 'translateY(-4px)',
-            boxShadow: '0 0 0 4px #bda78e9a, 0 0 26px #bda78e79',
-          }}
-        >
-          <Image
-            src={club.logo}
-            alt={`Escudo de ${club.name}`}
-            boxSize="46px"
-            objectFit="contain"
-            loading="lazy"
-            filter={isActive ? 'none' : 'saturate(0.85)'}
-            transition="filter 0.35s"
-          />
-        </Flex>
-      </Flex>
-
-      {/* Tarjeta */}
-      <Box
-        mt={5}
-        mx={2}
-        px={4}
-        pt={5}
-        pb={8}
-        bg="brand.dark"
-        border="1px solid"
-        borderColor="brand.amber"
-        borderRadius="lg"
-        textAlign="center"
-        position="relative"
-        transition="border-color 0.35s, transform 0.35s, background 0.35s"
-        _before={{
-          content: '""', position: 'absolute', top: 0, left: '50%',
-          transform: 'translateX(-50%)',
-          w: isActive ? '40px' : '0', h: '2px', bg: 'brand.amber', borderRadius: 'full',
-          transition: 'width 0.35s',
-        }}
-        _groupHover={{  
-          transform: 'translateY(-4px)',
-          bg: '#bda78e1a',
-          _before: { width: '40px' },
-        }}
-      >
-        <Text
-          fontFamily="mono"
-          fontSize="10px"
-          color={isActive ? 'brand.rec' : 'brand.bone'}
-          textTransform="uppercase"
-          letterSpacing="0.2em"
-          _groupHover={{ color: isActive ? 'brand.rec' : 'brand.rec' }}
-        >
-          {club.years}
-        </Text>
-        <Text fontFamily="heading" fontSize="xl" color="brand.bone" lineHeight={1.05} mt={1}>
-          {club.name}
-        </Text>
-        <Text
-          fontFamily="mono"
-          fontSize="10px"
-          color="brand.gray"
-          textTransform="uppercase"
-          letterSpacing="0.18em"
-          mt={1}
-        >
-          {club.country}
-        </Text>
-
-        {club.titles.length > 0 && (
-          <VStack spacing={1.5} mt={3}>
-            {club.titles.map((t) => (
-              <HStack key={t} spacing={1.5} justify="center">
-                
-                <Text fontFamily="mono" fontSize="9px" color="brand.dorado" letterSpacing="0.12em">
-                  🏆 {t}
-                </Text>
-              </HStack>
-            ))}
-          </VStack>
-        )}
-
-        {club.info && (
-          <VStack spacing={1} mt={3}>
-            {(Array.isArray(club.info) ? club.info : [club.info])
-              .filter(Boolean)
-              .map((line) => (
-                <Text
-                  key={line}
-                  fontFamily="mono"
-                  fontSize="10px"
-                  color="brand.gray"
-                  lineHeight={1.5}
-                >
-                  {line}
-                </Text>
-              ))}
-          </VStack>
-        )}
+      {/* Hoja inclinada */}
+      <Box order={{ base: 1, lg: 2 }} position="relative" maxW={{ base: '320px', md: '400px', lg: '440px' }} mx="auto" w="100%">
+        <Box position="absolute" inset={0} transform="rotate(6deg) translate(14px, 8px)" border="1px solid"
+          borderColor="whiteAlpha.300" borderRadius="10px" bg="rgba(255,255,255,0.03)" />
+        <MotionBox position="relative" {...inView}
+          variants={{ hidden: { opacity: 0, rotate: -9, y: 40 }, show: { opacity: 1, rotate: -3, y: 0, transition: { duration: 1, ease } } }}
+          whileHover={{ rotate: 0, scale: 1.02, transition: { duration: 0.4 } }}>
+          <BuenaFeImage hideMark onOpen={onOpen} boxShadow="0 30px 70px rgba(0,0,0,0.7)">
+            {/* resaltador */}
+            <MotionBox position="absolute" pointerEvents="none"
+              left={`${b.left}%`} top={`${b.top}%`} w={`${b.width}%`} h={`${b.height}%`}
+              bg="rgba(52,184,110,0.42)" borderRadius="3px" transformOrigin="left center"
+              sx={{ mixBlendMode: 'screen' }}
+              {...inView} variants={{ hidden: { scaleX: 0 }, show: { scaleX: 1, transition: { duration: 0.7, ease, delay: 0.9 } } }} />
+          </BuenaFeImage>
+        </MotionBox>
+        {/* sello */}
+        <MotionBox position="absolute" bottom={{ base: '-18px', lg: '-26px' }} left={{ base: '-12px', lg: '-34px' }}
+          boxSize={{ base: '96px', lg: '118px' }} borderRadius="full" border="2px solid" borderColor="brand.greenBright"
+          bg="brand.dark" display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+          {...inView} variants={{ hidden: { opacity: 0, scale: 1.6, rotate: -30 }, show: { opacity: 1, scale: 1, rotate: -12, transition: { duration: 0.5, ease, delay: 1.3 } } }}>
+          <Text fontFamily="mono" fontSize="8px" fontWeight="700" letterSpacing="0.22em" color="brand.greenBright">CONVOCADO</Text>
+          <Text fontFamily="heading" fontSize={{ base: '34px', lg: '42px' }} lineHeight={1}>#{bf.dorsal}</Text>
+          <Text fontFamily="mono" fontSize="8px" fontWeight="700" letterSpacing="0.22em" color="brand.greenBright">2026</Text>
+        </MotionBox>
       </Box>
-    </Box>
-  )
-}
-
-function ClubTimeline() {
-  const scrollRef = useRef(null)
-  const drag = useRef({ active: false, startX: 0, scrollLeft: 0, moved: false })
-
-  const scrollByDir = (dir) => {
-    scrollRef.current?.scrollBy({ left: dir * 300, behavior: 'smooth' })
-  }
-
-  const onDown = (e) => {
-    const el = scrollRef.current
-    if (!el) return
-    drag.current.active = true
-    drag.current.moved = false
-    drag.current.startX = (e.pageX ?? e.touches?.[0]?.pageX) - el.offsetLeft
-    drag.current.scrollLeft = el.scrollLeft
-    el.style.cursor = 'grabbing'
-  }
-  const onMove = (e) => {
-    const el = scrollRef.current
-    if (!drag.current.active || !el) return
-    const x = (e.pageX ?? e.touches?.[0]?.pageX) - el.offsetLeft
-    const delta = (x - drag.current.startX) * 1.15
-    if (Math.abs(delta) > 4) drag.current.moved = true
-    el.scrollLeft = drag.current.scrollLeft - delta
-  }
-  const onUp = () => {
-    drag.current.active = false
-    if (scrollRef.current) scrollRef.current.style.cursor = 'grab'
-  }
-
-  const arrowProps = {
-    variant: 'unstyled',
-    minW: '38px',
-    h: '38px',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 'full',
-    border: '1px solid',
-    borderColor: 'brand.amber',
-    color: 'brand.bone',
-    transition: 'all 0.25s',
-    _hover: { bg: 'brand.bgRef', color: 'brand.gray2' },
-    _active: { transform: 'scale(0.92)' },
-  }
-
-  return (
-    <Box mt={16}>
-      <Flex align="flex-end" justify="space-between" mb={7}>
-        <Box>
-          <Text fontFamily="mono" fontSize="10px" color="brand.bone"
-                  textTransform="uppercase" letterSpacing="widest">
-            Trayectoria
-          </Text>
-          <Text as="h2" fontFamily="heading" fontSize={{ base: '5xl', lg: '6xl' }}
-                  color="brand.amber" lineHeight={1}>
-            Clubes
-          </Text>
-        </Box>
-        <HStack spacing={2}>
-          <IconButton aria-label="Anterior" icon={<FiChevronLeft size={18} />}
-                      onClick={() => scrollByDir(-1)} {...arrowProps} />
-          <IconButton aria-label="Siguiente" icon={<FiChevronRight size={18} />}
-                      onClick={() => scrollByDir(1)} {...arrowProps} />
-        </HStack>
-      </Flex>
-
-      <Box
-        ref={scrollRef}
-        overflowX="auto"
-        cursor="grab"
-        pb={6}
-        sx={{
-          scrollSnapType: 'x mandatory',
-          scrollbarWidth: 'none',
-          '&::-webkit-scrollbar': { display: 'none' },
-        }}
-        onMouseDown={onDown}
-        onMouseMove={onMove}
-        onMouseUp={onUp}
-        onMouseLeave={onUp}
-        onTouchStart={onDown}
-        onTouchMove={onMove}
-        onTouchEnd={onUp}
-        onClickCapture={(e) => { if (drag.current.moved) { e.preventDefault(); e.stopPropagation() } }}
-      >
-        <HStack spacing={0} align="stretch" w="max-content" px={1}>
-          {playerData.clubs.map((club, i) => (
-            <Box key={club.name} role="group">
-              <ClubNode
-                club={club}
-                isFirst={i === 0}
-                isLast={i === playerData.clubs.length - 1}
-                isActive={i === 0}
-              />
-            </Box>
-          ))}
-        </HStack>
-      </Box>
-    </Box>
+      <BuenaFeLightbox isOpen={isOpen} onClose={onClose} />
+    </Grid>
   )
 }
 
 export default function StatsSection() {
-  const sectionRef = useRef(null)
-  const titleRef   = useRef(null)
-
-  useScrubReveal(sectionRef, {
-    elements: [
-      { ref: titleRef, fromVars: { y: 50, opacity: 0 }, vars: { y: 0, opacity: 1 } },
-    ],
-    start: 'top 80%',
-    end:   'top 40%',
-  })
-
+  const overall = overallOf(playerData.stats)
   return (
-    <Box
-      as="section"
-      id="estadisticas"
-      ref={sectionRef}
-      bg="brand.dark"
-      pt={{ base: 16, lg: 20 }}
-      pb={{ base: 16, lg: 20 }}
-      px={{ base: 5, lg: 10 }}
-      borderTopLeftRadius={{ base: '14px', lg: '22px' }}
-      borderTopRightRadius={{ base: '14px', lg: '22px' }}
-      boxShadow="0 -24px 80px rgba(0,0,0,0.65)"
-    >
-      <Box maxW="1400px" mx="auto">
-        {/* Header */}
-        <Flex align="flex-end" justify="space-between" mb={10}>
-          <Box ref={titleRef}>
-            <Text fontFamily="mono" fontSize="10px" color="brand.bone"
-                  textTransform="uppercase" letterSpacing="widest" >
-              Temporada 2025 / 2026
-            </Text>
-            <Text as="h2" fontFamily="heading" fontSize={{ base: '5xl', lg: '6xl' }}
-                  color="brand.amber" lineHeight={1}>
-              Estadísticas
-            </Text>
+    <SectionShell>
+      <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} gap={{ base: 12, lg: 14 }} alignItems="center">
+        {/* Izquierda: foto + valoración y perfil */}
+        <Flex gap={{ base: 8, md: 8, lg: 10 }} direction={{ base: 'column', md: 'row' }} align={{ md: 'center' }}>
+          <PlayerRating value={overall} />
+          <Box flex={1} minW={0}>
+            <Eyebrow color="brand.white" mb={3}>Perfil</Eyebrow>
+            <Grid templateColumns={{ base: '1fr 1fr', md: '1fr' }} columnGap={6} rowGap={{ base: 4, md: 3 }}>
+              {playerData.profile.map((p) => (
+                <Box key={p.label} borderTop="1px solid" borderColor="whiteAlpha.200" pt={2} minW={0}>
+                  <Eyebrow fontSize="9px" letterSpacing="0.16em">{p.label}</Eyebrow>
+                  <Text fontFamily="mono" fontWeight="600" fontSize={{ base: 'sm', lg: 'md' }}>{p.value}</Text>
+                </Box>
+              ))}
+            </Grid>
           </Box>
         </Flex>
 
-        {/* Contenido: radar (nuevo) o bento de 3 columnas (original) */}
-        {USE_RADAR ? (
-          <RadarStats />
-        ) : (
-          <Grid
-            templateColumns={{ base: '1fr', md: '1fr 1fr', lg: '1fr 1.1fr 1fr' }}
-            gap={5}
-          >
-            <GridItem><BioCard /></GridItem>
-            <GridItem><SeasonCards /></GridItem>
-            <GridItem><StatBars /></GridItem>
-          </Grid>
-        )}
+        {/* Derecha: informe técnico */}
+        <Box border="1px solid" borderColor="whiteAlpha.300" borderRadius="14px" p={{ base: 5, lg: 8 }}>
+          <Flex justify="space-between" align="baseline" mb={6}>
+            <Eyebrow color="brand.white">Informe técnico</Eyebrow>
+            <Eyebrow fontSize="9px">Escala 1 — 10</Eyebrow>
+          </Flex>
+          <VStack spacing={{ base: 5, lg: 6 }} align="stretch">
+            {playerData.stats.map((s, i) => <SegmentBar key={s.label} {...s} index={i} />)}
+          </VStack>
+        </Box>
+      </Grid>
 
-        {/* Club timeline */}
-        <ClubTimeline />
-      </Box>
-    </Box>
+      {/* Hitos */}
+      <Grid mt={{ base: 12, lg: 16 }} templateColumns={{ base: '1fr', sm: '1fr 1fr', lg: 'repeat(4, 1fr)' }} gap={3}>
+        {playerData.milestones.map((m, i) => (
+          <MotionBox key={m.title} {...inView}
+            variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease, delay: i * 0.08 } } }}
+            borderTop="2px solid" borderColor={i === 0 ? 'brand.greenBright' : 'brand.white'} pt={4} pr={4}>
+            <Text fontFamily="heading" fontSize="lg" color="brand.gray">{m.year}</Text>
+            <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '2xl' }} lineHeight={1.05}>{m.title}</Text>
+            <Text fontFamily="mono" fontSize="xs" color="brand.gray" mt={1}>{m.detail}</Text>
+          </MotionBox>
+        ))}
+      </Grid>
+
+      <Box mt={{ base: 16, lg: 24 }}><BuenaFeDossier /></Box>
+
+      <Box mt={{ base: 16, lg: 24 }}><CareerTimeline /></Box>
+    </SectionShell>
   )
 }

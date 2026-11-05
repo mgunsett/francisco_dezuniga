@@ -8,7 +8,12 @@ import fotoHero from '@assets/foto_hero1.webp'
 import fotoHeroBg from '@assets/foto_herobg.webp'
 import fotoHeroBg1 from '@assets/foto_herobg1.webp'
 import escudoRiestra from '@assets/escudo_riestra.webp'
+import escudoDefensores from '@assets/escudos/escudo_defensores.webp'
 import polonia from '@assets/polonia.svg'
+import fotoStats from '@assets/foto_stats.webp'
+import logoAer from '@assets/academias/logo_aer.webp'
+import logoTocalli from '@assets/academias/logo_tocalli.webp'
+import listaBuenaFe from '@assets/docs/lista_buena_fe_sudamericana.webp'
 
 import argentina from '@assets/argentina.webp'
 import universitario from '@assets/escudo_univ.webp'
@@ -75,106 +80,83 @@ export const playerData = {
   heroBg: fotoHeroBg,
   heroBg1: fotoHeroBg1,
 
+  // ⚠️ PLACEHOLDERS: valores inventados hasta tener datos reales
   stats: [
-    { label: 'Velocidad',      value: 91 },
-    { label: 'Definición',     value: 88 },
-    { label: 'Regate',         value: 84 },
-    { label: 'Pases Completos',    value: 79 },
-    { label: 'Presión Alta',   value: 82 },
-    { label: 'Visión de Juego',value: 79 },
+    { label: 'Reflejos',           value: 86 },
+    { label: 'Juego aéreo',        value: 82 },
+    { label: 'Uno contra uno',     value: 80 },
+    { label: 'Posicionamiento',    value: 84 },
+    { label: 'Juego con los pies', value: 85 },
+    { label: 'Saque',              value: 83 },
   ],
 
-  seasonStats: [
-    { label: 'Partidos',    value: 16 },
-    { label: 'Goles',       value: 3 },
-    { label: 'Asistencias', value: 1  },
-    { label: 'Tiros al árco', value: 8  },
-    { label: 'Min / Part.', value: "1,022'" },
-    { label: 'Valoración', value: 7.4  },
-
+  // Ficha de perfil (altura y peso ya se muestran en el Hero)
+  profile: [
+    { label: 'Posición',      value: 'Arquero' },
+    { label: 'Pie hábil',     value: 'Izquierdo' },
+    { label: 'Mano hábil',    value: 'Derecha' },
+    { label: 'Ojo dominante', value: 'Derecho' },
+    { label: 'Edad',          value: '18 años' },
+    { label: 'Nacimiento',    value: '20 / 03 / 2008' },
+    { label: 'Origen',        value: 'Buenos Aires, Argentina' },
+    { label: 'Nacionalidad',  value: 'Argentina · Polonia (UE)' },
+    { label: 'Club actual',   value: 'Deportivo Riestra' },
   ],
+
+  // Hitos reales del CV (reemplazan a "última temporada" mientras no haya números)
+  milestones: [
+    { year: '2026', title: 'Plantel de Primera División', detail: 'Arquero de Primera · Liga Profesional AFA' },
+    { year: '2026', title: 'Titular en Proyección',       detail: 'Categoría Proyección · Liga Profesional AFA' },
+    { year: '2026', title: 'Convocado a la CONMEBOL Sudamericana', detail: 'Lista de buena fe del club' },
+    { year: '2025', title: 'Titular en 6ta división',     detail: 'Citado a entrenar con Reserva y Primera' },
+  ],
+
+  // Recorte del jugador (fondo transparente) usado en Estadísticas
+  statsImage: fotoStats,
+
+  // Lista de buena fe · CONMEBOL Sudamericana 2026 (imagen oficial del club)
+  buenaFe: {
+    image: listaBuenaFe,
+    title: 'Lista de buena fe',
+    competition: 'CONMEBOL Sudamericana 2026',
+    club: 'Deportivo Riestra',
+    dorsal: 44,
+    // Recuadro de su línea ("44. Francisco DE ZUÑIGA") en px sobre la imagen original
+    size: { w: 1024, h: 1280 },
+    highlight: { x: 506, y: 858, w: 392, h: 46 },
+  },
 
   clubs: [
     {
-      name:    'Universitario',
-      country: 'Perú',
-      years:   '2026 — Actualidad',
-      logo:    universitario,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'Liga de Quito',
-      country: 'Ecuador',
-      years:   '2023 — 2025',
-      logo:    escudoLigadequito,
-      titles:  ['Serie A Ecuador 2023','Copa Sudamericana 2023', 'Serie A Ecuador 2024', 'Supercopa Ecuador 2024'],
-      info:    '',
-    },
-    {
-      name:    'Al-Hali Saudi',
-      country: 'Arabia Saudita',
-      years:   '2022',
-      logo:    escudoAlhali,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'Universidad Católica',
-      country: 'Ecuador',
-      years:   '2021 — 2022',
-      logo:    escudoUcatolica,
-      titles:  [],
-      info:    '11 ideal de la Serie A de Ecuador 2021',
-    },
-    {
-      name:    'S.D Aucas',
-      country: 'Ecuador',
-      years:   '2020',
-      logo:    escudoAucas,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'Central Córdoba',
+      name:    'Deportivo Riestra',
       country: 'Argentina',
-      years:   '2019',
-      logo:    escudoCentralCordoba,
+      years:   '2025 — Actualidad',
+      from: 2025, to: 2026,
+      logo:    escudoRiestra,
       titles:  [],
-      info:    '',
+      info:    ['Primera División y titular en Proyección (2026)', 'Convocado a la CONMEBOL Sudamericana', 'Titular en 6ta división (2025)'],
     },
     {
-      name:    'Newell\'s Old Boys',
+      name:    'Defensores de Belgrano',
       country: 'Argentina',
-      years:   '2018',
-      logo:    escudoNewells,
+      years:   '2024',
+      from: 2024, to: 2024,
+      logo:    escudoDefensores,
       titles:  [],
-      info:    '',
+      info:    'Arquero de 7ma división (categoría 2008)',
     },
-    {
-      name:    'Chaco For Ever',
-      country: 'Argentina',
-      years:   '2013-2014 / 2017',
-      logo:    escudoChaco,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'San José',
-      country: 'Argentina',
-      years:   '2016 — 2017',
-      logo:    escudoSanjose,
-      titles:  [],
-      info:    '',
-    },
-    {
-      name:    'Atlético Paraná',
-      country: 'Argentina',
-      years:   '2011-2013 / 2015',
-      logo:    escudoAtlParana,
-      titles:  [],
-      info:    '',
-    },
+  ],
+
+  // Formación específica de arqueros
+  academies: [
+    { name: 'Academia Saccone', short: 'AER',   years: '2018 — 2025', from: 2018, to: 2025, reference: 'Alejandro Saccone', logo: logoAer },
+    { name: 'Academia Tocalli', short: 'CEFAT', years: '2023 — 2025', from: 2023, to: 2025, reference: 'Martín Tocalli y Fernando Escobar', logo: logoTocalli },
+  ],
+
+  coaches: [
+    { year: '2026', names: 'Gastón "Pato" Romero y Gustavo Ruhl', role: 'Entrenadores de arqueros de Primera · Deportivo Riestra' },
+    { year: '2025', names: 'Néstor Frutos y Leo Cuerdo',          role: 'Entrenadores de arqueros juveniles · River Plate' },
+    { year: '2025', names: 'Fernando Escobar',                     role: 'Entrenador de arqueros Sub-20 · Selección Argentina' },
   ],
 
   videos: [
