@@ -1,9 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// CONTACTO · tarjetas, redes, Europa y formulario
-// Encabezado, tarjetas de contacto (jugador y padre), redes y debajo el
-// formulario junto al bloque "Disponible para Europa". Footer de una
-// fila con logo, links y créditos. Animación SUTIL (scrub de GSAP).
-// ─────────────────────────────────────────────────────────────
 import { useEffect, useRef } from 'react'
 import { Box, Flex, Grid, Text } from '@chakra-ui/react'
 import { gsap } from 'gsap'

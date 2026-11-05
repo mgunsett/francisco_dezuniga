@@ -1,11 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// ESTADÍSTICAS · "Informe de scouting"
-// Foto del jugador con la valoración como insignia, perfil y barras
-// segmentadas tipo informe (escala 1–10). Lista de buena fe de la
-// CONMEBOL Sudamericana como documento. Trayectoria en línea
-// de tiempo vertical: clubes de un lado, formación del otro.
-// Animación MEDIA con Framer Motion (whileInView).
-// ─────────────────────────────────────────────────────────────
 import { Box, Grid, Text, Flex, Image, VStack, Button, useDisclosure } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import { playerData } from '../../data/playerData'
@@ -18,7 +10,7 @@ const MotionBox = motion(Box)
 const ease = [0.16, 1, 0.3, 1]
 const inView = { initial: 'hidden', whileInView: 'show', viewport: { once: true, amount: 0.3 } }
 
-// Foto del jugador en lugar del escudo, con la valoración como insignia
+// Foto del jugador 
 function PlayerRating({ value }) {
   return (
     <MotionBox position="relative" flexShrink={0} w={{ base: '100%', md: '270px', lg: '300px' }}
@@ -86,9 +78,9 @@ function TimelineItem({ item, side }) {
       <Flex gap={4} align="center" direction={{ base: 'row', lg: side === 'left' ? 'row-reverse' : 'row' }}>
         {item.logo ? (
           <Flex boxSize="56px" flexShrink={0} borderRadius="full" overflow="hidden" align="center" justify="center"
-            bg={isClub ? 'brand.white' : 'transparent'} border="1px solid" borderColor={isClub ? 'brand.white' : 'whiteAlpha.400'}>
+            bg={isClub ? 'transparent' : 'transparent'} border="1px solid" borderColor={isClub ? 'transparent' : 'whiteAlpha.400'}>
             <Image src={item.logo} alt={`Logo de ${item.name}`} objectFit={isClub ? 'contain' : 'cover'}
-              boxSize={isClub ? '38px' : '100%'} loading="lazy" />
+              boxSize={isClub ? '50px' : '100%'} loading="lazy" />
           </Flex>
         ) : (
           <Flex boxSize="56px" flexShrink={0} borderRadius="full" border="1px solid" borderColor="whiteAlpha.500"
@@ -99,7 +91,7 @@ function TimelineItem({ item, side }) {
         <Box minW={0}>
           <Text fontFamily="mono" fontSize="10px" letterSpacing="0.2em" textTransform="uppercase"
             color={item.current ? 'brand.greenBright' : 'brand.gray'}>
-            {item.years} · {isClub ? 'Club' : 'Formación'}
+            {item.years} {isClub ? '' : ' · Formación'}
           </Text>
           <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '3xl' }} lineHeight={1}>{item.name}</Text>
         </Box>
@@ -128,9 +120,9 @@ function CareerTimeline() {
     <Box>
       <BlockTitle eyebrow="Trayectoria" title="Clubes y formación" />
       <Grid templateColumns={{ base: '1fr', lg: '1fr 56px 1fr' }} gap={{ base: 4, lg: 0 }} position="relative">
-        {/* línea central */}
-        <Box display={{ base: 'none', lg: 'block' }} position="absolute" left="50%" top={0} bottom={0} w="1px"
-          bg="linear-gradient(to bottom, #fff, rgba(255,255,255,0.1))" />
+        {/* línea central: con borde y no con fondo, porque un fondo de 1px puede redondearse a 0 con zoom < 100% */}
+        <Box display={{ base: 'none', lg: 'block' }} position="absolute" left="50%" top={0} bottom={0} w={0}
+          borderLeft="1px solid" sx={{ borderImage: 'linear-gradient(to bottom, #fff, rgba(255,255,255,0.1)) 1' }} />
         {/* Columna formación (izquierda) */}
         <VStack spacing={4} align="stretch" order={{ base: 2, lg: 1 }} pt={{ lg: 16 }}>
           <Eyebrow display={{ base: 'block', lg: 'none' }} mt={4}>Formación</Eyebrow>
@@ -142,7 +134,7 @@ function CareerTimeline() {
             <VStack align={{ base: 'flex-start', lg: 'flex-end' }} spacing={3}>
               {coaches.map((c) => (
                 <Box key={c.names}>
-                  <Text fontFamily="mono" fontWeight="700" fontSize="sm">
+                  <Text fontFamily="mono" fontWeight="700" fontSize="md" letterSpacing="0.1em" textTransform="uppercase">
                     <Box as="span" color="brand.greenBright">{c.year}</Box> · {c.names}
                   </Text>
                   <Text fontFamily="mono" fontSize="xs" color="brand.gray">{c.role}</Text>
@@ -163,8 +155,7 @@ function CareerTimeline() {
   )
 }
 
-// Documento: la lista inclinada como hoja de un dossier, con un
-// trazo de resaltador que pasa sobre su nombre y un sello
+// Documento: la lista buena Fe
 function BuenaFeDossier() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const bf = playerData.buenaFe
@@ -175,8 +166,8 @@ function BuenaFeDossier() {
         <BlockTitle eyebrow="Documento oficial" title="Lista de buena fe" mb={{ base: 4, lg: 5 }} />
         <MotionBox {...inView} variants={{ hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease } } }}>
           <Text fontFamily="mono" fontSize={{ base: 'sm', lg: 'md' }} color="brand.gray2" maxW="520px" lineHeight={1.7}>
-            Deportivo Riestra lo inscribió en su lista de buena fe para la{' '}
-            <Box as="span" color="brand.white" fontWeight="700">{bf.competition}</Box>, con el dorsal {bf.dorsal}.
+            Inscripto por Deportivo Riestra en la lista de buena fe para la{' '}
+            <Box as="span" color="brand.white" fontWeight="700">{bf.competition}</Box>
           </Text>
         </MotionBox>
         <MotionBox mt={{ base: 6, lg: 8 }} maxW="520px" {...inView}
@@ -192,7 +183,7 @@ function BuenaFeDossier() {
             </Box>
           ))}
         </Grid>
-        <Button onClick={onOpen} mt={{ base: 6, lg: 8 }} bg="brand.white" color="brand.dark" borderRadius="full"
+        <Button onClick={onOpen} mt={{ base: 6, lg: 8 }} bg="brand.white" color="brand.dark" borderRadius="xl"
           fontFamily="mono" fontSize="xs" letterSpacing="0.2em" textTransform="uppercase" px={6}
           _hover={{ bg: 'brand.greenBright' }}>
           Ver documento
@@ -271,7 +262,7 @@ export default function StatsSection() {
             borderTop="2px solid" borderColor={i === 0 ? 'brand.greenBright' : 'brand.white'} pt={4} pr={4}>
             <Text fontFamily="heading" fontSize="lg" color="brand.gray">{m.year}</Text>
             <Text fontFamily="heading" fontSize={{ base: '2xl', lg: '2xl' }} lineHeight={1.05}>{m.title}</Text>
-            <Text fontFamily="mono" fontSize="xs" color="brand.gray" mt={1}>{m.detail}</Text>
+            
           </MotionBox>
         ))}
       </Grid>

@@ -120,7 +120,7 @@ export const playerData = {
       from: 2025, to: 2026,
       logo:    escudoRiestra,
       titles:  [],
-      info:    ['Primera División y titular en Proyección (2026)', 'Convocado a la CONMEBOL Sudamericana', 'Titular en 6ta división (2025)'],
+      info:    ['Primera División y titular Torneo Proyección (2026)', 'Titular en 6ta división (2025)'],
     },
     {
       name:    'Defensores de Belgrano',

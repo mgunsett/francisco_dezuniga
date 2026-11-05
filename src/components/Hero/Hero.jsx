@@ -26,6 +26,9 @@ const Chars = ({ text }) =>
 // Intensidad de las fotos de fondo [patada, agachado]
 const BG_OPACITY = [0.42, 0.34]
 
+const HERO_UNIT = 'min(1vh, 0.67vw)'
+const u = (n) => `calc(var(--hero-u) * ${n})`
+
 const stats = [
   { label: 'Altura',    value: 1.85, decimals: 2, suffix: ' m' },
   { label: 'Peso',      value: 77,   decimals: 0, suffix: ' kg' },
@@ -116,6 +119,7 @@ export default function Hero() {
           WebkitMaskImage: { base: 'linear-gradient(black 96%, transparent)', lg: 'linear-gradient(black 90%, transparent)' },
           '@supports (height: 100dvh)': { height: '100dvh' },
           perspective: '800px',
+          '--hero-u': HERO_UNIT,
         }}
       >
       
@@ -129,14 +133,14 @@ export default function Hero() {
           right={{ base: '-34%', md: '-10%', lg: '4%' }} bottom={{ base: '46%', md: '42%', lg: '-6%' }} h={{ base: '28vh', md: '38vh', lg: '68vh' }}
           filter="grayscale(1) contrast(1.2) brightness(0.9) blur(1px)" />
 
-        {/* Composición centrada: foto + número | ficha */}
+        {/* Composición centrada (desktop): número + ficha | foto */}
         <Flex position="absolute" inset={0} justify="center" zIndex={3}>
           <Flex w={{ base: '100%', lg: 'auto' }} h="100%"
-            align={{ lg: 'stretch' }} >
+            direction={{ lg: 'row-reverse' }} align={{ lg: 'stretch' }} >
 
-            {/* IZQUIERDA — número + foto principal */}
+            {/* DERECHA en desktop — foto principal (y número detrás en mobile) */}
             <Box position={{ base: 'absolute', lg: 'relative' }} inset={{ base: 0, lg: 'auto' }}
-              w={{ lg: 'min(36vw, 500px)' }} flexShrink={0} h="100%" pointerEvents="none">
+              w={{ lg: u(55) }} flexShrink={0} h="100%" pointerEvents="none">
               {/* Número detrás de la foto solo en mobile: en desktop forma parte de la ficha */}
               <Box position="absolute" zIndex={0} display={{ base: 'block', lg: 'none' }}
                 left="70%" top="39%" transform="translateX(-20%)">
@@ -149,8 +153,8 @@ export default function Hero() {
                 </Box>
               </Box>
               <Box position="absolute" zIndex={1}
-                left="50%" bottom={{ base: '38%', md: '36%', lg: 0 }}
-                h={{ base: 'min(54vh, 150vw)', md: '58vh', lg: '94vh' }}
+                left="35%" bottom={{ base: '38%', md: '36%', lg: '-30%' }}
+                h={{ base: 'min(54vh, 150vw)', md: '58vh', lg: u(124) }}
                 transform={{ base: 'translateX(-62%)', md: 'translateX(-70%)', lg: 'translateX(-50%)' }}>
                 <Box className="hc-photo-wrap" h="100%" transformOrigin="bottom center">
                   <Image className="hc-photo"
@@ -168,21 +172,22 @@ export default function Hero() {
               display={{ base: 'block', lg: 'none' }}
               bg="linear-gradient(to top, #0A0B0A 58%, rgba(10,11,10,0.8) 78%, transparent)" />
 
-            {/* DERECHA — ficha */}
+            {/* IZQUIERDA en desktop — número + ficha */}
             <Flex position={{ base: 'absolute', lg: 'relative' }} zIndex={2}
               left={{ base: 'max(20px, 5%)', md: '8%', lg: 'auto' }} right={{ base: 'max(20px, 5%)', md: 'auto', lg: 'auto' }}
               bottom={{ base: 'max(28px, 5.5vh)', md: '7vh', lg: 'auto' }} maxW={{ md: '560px', lg: 'none' }}
               flex={{ lg: '0 0 auto' }} align="center" minW={0}>
-              <Flex className="hc-content" gap={{ lg: 8 }} w="100%">
+              <Flex className="hc-content" gap={{ lg: u(0.88) }} w="100%">
                 {/* El estilo del número (fuente, relleno, trazo) se edita en HeroNumber.jsx */}
-                <HeroNumber value={playerData.number} display={{ base: 'none', lg: 'block' }} />
+                <HeroNumber value={playerData.number} display={{ base: 'none', lg: 'block' }}
+                  textProps={{ sx: { strokeWidth: u(0.17) } }} />
 
-                <Flex direction="column" gap={{ base: 'clamp(10px, 1.6vh, 16px)', lg: 5 }} flex={1} minW={0}>
+                <Flex direction="column" gap={{ base: 'clamp(10px, 1.6vh, 16px)', lg: u(2.2) }} flex={1} minW={0}>
 
-                <HStack className="hc-meta" spacing={3} opacity={0}>
-                  <Image src={playerData.logoCurrentClub} alt="Escudo Deportivo Riestra" h={{ base: '32px', lg: '50px' }} />
+                <HStack className="hc-meta" spacing={{ base: 3, lg: u(1.32) }} opacity={0}>
+                  <Image src={playerData.logoCurrentClub} alt="Escudo Deportivo Riestra" h={{ base: '32px', lg: u(5.5) }} />
                   <Box>
-                    <Text fontFamily="heading" fontSize={{ base: 'lg', lg: '2xl' }} letterSpacing="wider" lineHeight={1}>
+                    <Text fontFamily="heading" fontSize={{ base: 'lg', lg: u(2.65) }} letterSpacing="wider" lineHeight={1}>
                       {playerData.currentClub}
                     </Text>
                     
@@ -190,32 +195,32 @@ export default function Hero() {
                 </HStack>
 
                 <Box>
-                  <HStack className="hc-meta" spacing={3} opacity={0} mb={{ base: 1, lg: 2 }}>
+                  <HStack className="hc-meta" spacing={{ base: 3, lg: u(1.32) }} opacity={0} mb={{ base: 1, lg: u(0.88) }}>
                     
-                    <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }} color="brand.green"
+                    <Text fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: u(1.55) }} color="brand.green"
                       letterSpacing="widest" textTransform="uppercase">
                       {playerData.position} · Clase {playerData.category}
                     </Text>
                   </HStack>
-                  <Box as="h1" fontFamily="heading" lineHeight={0.86} fontSize={{ base: 'min(21vw, 11vh)', md: '14vw', lg: 'min(9vw, 140px)' }}
+                  <Box as="h1" fontFamily="heading" lineHeight={0.86}
                     sx={{ transformStyle: 'preserve-3d' }}>
-                    <Box display="block" overflow="hidden" pt="0.12em" mt="-0.12em" color="brand.white">
-                      <Chars text={playerData.name} />
-                    </Box>
-                    <Box display="block" overflow="hidden" pt="0.12em" mt="-0.12em" color="transparent"
-                      sx={{ WebkitTextStroke: { base: '1.5px #fff', lg: '2px #fff' } }}>
+                      <Box display="block" overflow="hidden" pt="0.12em" mt="-0.12em" color="transparent"
+                      sx={{ WebkitTextStroke: { base: '1.5px #fff', lg: `${u(0.22)} #fff` } }} fontSize={{ base: 'min(21vw, 11vh)', md: '14vw', lg: u(18.4) }}>
                       <Chars text={playerData.fullName} />
                     </Box>
+                    <Box display="block" overflow="hidden" pt="0.12em" mt="-0.12em" color="brand.white" fontSize={{ base: 'min(21vw, 11vh)', md: '14vw', lg: u(15.4) }}>
+                      <Chars text={playerData.name} />
+                    </Box>      
                   </Box>
                 </Box>
 
                 {/* Datos clave */}
-                <Grid templateColumns={{ base: 'repeat(4, minmax(0, 1fr))', md: 'repeat(4, auto)' }} gap={{ base: 2, md: 6, lg: 8 }} justifyContent="start">
+                <Grid templateColumns={{ base: 'repeat(4, minmax(0, 1fr))', md: 'repeat(4, auto)' }} gap={{ base: 2, md: 6, lg: u(3.5) }} justifyContent="start">
                   {stats.map((s) => (
-                    <Box key={s.label} className="hc-stat" opacity={0} borderLeft="1px solid" borderColor="whiteAlpha.300" pl={{ base: 2, lg: 3 }}>
-                      <Text fontFamily="mono" fontSize={{ base: '9px', lg: '10px' }} color="brand.gray"
+                    <Box key={s.label} className="hc-stat" opacity={0} borderLeft="1px solid" borderColor="whiteAlpha.300" pl={{ base: 2, lg: u(1.32) }}>
+                      <Text fontFamily="mono" fontSize={{ base: '9px', lg: u(1.1) }} color="brand.gray"
                         letterSpacing="widest" textTransform="uppercase">{s.label}</Text>
-                      <Text fontFamily="heading" fontSize={{ base: 'clamp(20px, 6.4vw, 26px)', md: '3xl', lg: '2xl' }} lineHeight={1} whiteSpace="nowrap"
+                      <Text fontFamily="heading" fontSize={{ base: 'clamp(20px, 6.4vw, 26px)', md: '3xl', lg: u(2.65) }} lineHeight={1} whiteSpace="nowrap"
                         sx={{ fontVariantNumeric: 'tabular-nums' }}>
                         {s.text ?? (
                           <span className="hc-count" data-value={s.value} data-decimals={s.decimals} data-suffix={s.suffix}>
@@ -228,34 +233,34 @@ export default function Hero() {
                 </Grid>
 
                 {/* Pasaporte comunitario */}
-                <HStack className="hc-badge" opacity={0} alignSelf="flex-start" spacing={3}
+                <HStack className="hc-badge" opacity={0} alignSelf="flex-start" spacing={{ base: 3, lg: u(1.32) }}
                   border="1px solid" borderColor="whiteAlpha.500" borderRadius="full"
                   bg="whiteAlpha.50" backdropFilter="blur(8px)"
-                  px={{ base: 3, lg: 4 }} py={{ base: 1.5, lg: 2 }}>
-                  <HStack spacing={1}>
-                    <Image src={playerData.nationalityFlag} alt="Argentina" w="20px" />
-                    <Image src={playerData.secondNationalityFlag} alt="Polonia" w="20px" />
+                  px={{ base: 3, lg: u(1.76) }} py={{ base: 1.5, lg: u(0.88) }}>
+                  <HStack spacing={{ base: 1, lg: u(0.44) }}>
+                    <Image src={playerData.nationalityFlag} alt="Argentina" w={{ base: '20px', lg: u(2.2) }} />
+                    <Image src={playerData.secondNationalityFlag} alt="Polonia" w={{ base: '20px', lg: u(2.2) }} />
                   </HStack>
-                  <Text fontFamily="mono" fontWeight="700" fontSize={{ base: '10px', lg: 'xs' }}
+                  <Text fontFamily="mono" fontWeight="700" fontSize={{ base: '10px', lg: u(1.32) }}
                     letterSpacing="widest" textTransform="uppercase">
                     Argentino - Polaco <Box as="span" color="brand.greenBright"> (UE) </Box>
                   </Text>
                 </HStack>
 
                 {/* CTAs */}
-                <Grid templateColumns={{ base: '1fr 1fr', md: 'auto auto' }} gap={3} justifyContent="start" pt={{ base: 0.5, lg: 2 }}>
+                <Grid templateColumns={{ base: '1fr 1fr', md: 'auto auto' }} gap={{ base: 3, lg: u(1.32) }} justifyContent="start" pt={{ base: 0.5, lg: u(0.88) }}>
                   <Box as="button" type="button" className="hc-cta" opacity={0} onClick={() => scrollTo('#videos')}
-                    bg="brand.white" color="brand.black" fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }}
-                    letterSpacing="widest" textTransform="uppercase" px={{ base: 4, lg: 7 }} py={{ base: 3, lg: 3.5 }} textAlign="center"
-                    borderRadius="10px" transition="transform 0.2s, background 0.2s, color 0.2s"
+                    bg="brand.white" color="brand.black" fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: u(1.55) }}
+                    letterSpacing="widest" textTransform="uppercase" px={{ base: 4, lg: u(3.1) }} py={{ base: 3, lg: u(1.55) }} textAlign="center"
+                    borderRadius={{ base: '10px', lg: u(1.1) }} transition="transform 0.2s, background 0.2s, color 0.2s"
                     _hover={{ bg: 'brand.greenBright', transform: 'translateY(-2px)' }} _active={{ transform: 'scale(0.97)' }}
                     _focusVisible={{ outline: '2px solid', outlineColor: 'brand.greenBright', outlineOffset: '3px' }}>
                     Ver videos
                   </Box>
                   <Box as="button" type="button" className="hc-cta" opacity={0} onClick={() => scrollTo('#contact')}
-                    border="1px solid" borderColor="whiteAlpha.500" fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: 'sm' }}
-                    letterSpacing="widest" textTransform="uppercase" px={{ base: 4, lg: 7 }} py={{ base: 3, lg: 3.5 }} textAlign="center"
-                    borderRadius="10px" transition="border-color 0.2s, transform 0.2s"
+                    border="1px solid" borderColor="whiteAlpha.500" fontFamily="mono" fontWeight="700" fontSize={{ base: 'xs', lg: u(1.55) }}
+                    letterSpacing="widest" textTransform="uppercase" px={{ base: 4, lg: u(3.1) }} py={{ base: 3, lg: u(1.55) }} textAlign="center"
+                    borderRadius={{ base: '10px', lg: u(1.1) }} transition="border-color 0.2s, transform 0.2s"
                     _hover={{ borderColor: 'brand.greenBright', transform: 'translateY(-2px)' }}
                     _active={{ transform: 'scale(0.97)' }}
                     _focusVisible={{ outline: '2px solid', outlineColor: 'brand.greenBright', outlineOffset: '3px' }}>

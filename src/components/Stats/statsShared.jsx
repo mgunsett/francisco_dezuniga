@@ -55,7 +55,7 @@ export function SectionShell({ children }) {
     >
       <Box maxW="1300px" mx="auto">
         <Box ref={titleRef} mb={{ base: 8, lg: 12 }}>
-          <Eyebrow color="brand.bone">Perfil de arquero</Eyebrow>
+          <Eyebrow color="brand.bone">Perfil</Eyebrow>
           <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>
             Estadísticas
           </Text>

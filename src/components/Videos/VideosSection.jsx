@@ -42,13 +42,9 @@ export default function VideosSection() {
       <Box maxW="1200px" mx="auto" position="relative">
         <Flex className="va-head" justify="space-between" align="flex-end" wrap="wrap" gap={4} mb={{ base: 6, lg: 10 }}>
           <Box>
-            <Eyebrow color="brand.bone">Videos</Eyebrow>
-            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>Highlights</Text>
+            <Eyebrow color="brand.bone">MEDIA</Eyebrow>
+            <Text as="h2" fontFamily="heading" fontSize={{ base: '6xl', lg: '8xl' }} lineHeight={0.9}>VIDEOS</Text>
           </Box>
-          <Flex align="center" gap={3}>
-            <Box w="22px" h="2px" bg="brand.greenBright" />
-            <Eyebrow>{hl.subtitle}</Eyebrow>
-          </Flex>
         </Flex>
 
         <Box className="va-player">
@@ -56,7 +52,7 @@ export default function VideosSection() {
         </Box>
 
         <Box className="va-reels" mt={{ base: 14, lg: 20 }}>
-          <VerticalTitleRow title="En Instagram" icon={FaInstagram} itemRatio={16 / 9} titleClassName="reel-card"
+          <VerticalTitleRow title="Instagram" icon={FaInstagram} itemRatio={16 / 9} titleClassName="reel-card"
             display={{ base: 'none', md: 'grid' }} gap={{ md: 5, lg: 10 }}>
             {playerData.videos.map((v, i) => <ReelCard key={v.id} video={v} index={i} onOpen={setOpen} />)}
           </VerticalTitleRow>

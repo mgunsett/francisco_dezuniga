@@ -1,9 +1,10 @@
 // Piezas compartidas de Contacto + Footer
 import { useState } from 'react'
-import { Box, Flex, Grid, Text, Input, Textarea, Select, Image } from '@chakra-ui/react'
+import { Box, Flex, Grid, Text, Input, Textarea, Select, Image, Link } from '@chakra-ui/react'
 import { FaWhatsapp, FaEnvelope, FaInstagram } from 'react-icons/fa'
 import { FiArrowUpRight, FiCheck, FiArrowUp } from 'react-icons/fi'
 import { playerData } from '../../data/playerData'
+import sportfolio from '../../../assets/logo_sport.png'
 
 export const reduceMotion = () =>
   typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -86,7 +87,7 @@ export function ContactForm({ compact = false, ...rest }) {
       </Grid>
       <Flex mt={4} align="center" justify="space-between" gap={4} wrap="wrap">
         <Text fontFamily="mono" fontSize="10px" color="brand.gray" maxW="300px">
-          El mensaje llega directo a la familia de {playerData.name.charAt(0) + playerData.name.slice(1).toLowerCase()}.
+        
         </Text>
         <Box as="button" type="submit" disabled={state === 'sending'} display="inline-flex" alignItems="center" gap={2}
           bg="brand.white" color="brand.dark" borderRadius="full" px={6} h="48px" fontFamily="mono" fontWeight="700"
@@ -117,10 +118,7 @@ export function PersonCard({ person, highlight = false, ...rest }) {
       {highlight && <Box position="absolute" left={0} top={0} bottom={0} w="3px" bg="brand.greenBright" />}
       <Eyebrow color={highlight ? 'brand.greenBright' : 'brand.gray'}>{person.role}</Eyebrow>
       <Text fontFamily="heading" fontSize={{ base: '3xl', lg: '4xl' }} lineHeight={1} mt={1}>{person.name}</Text>
-      <Box mt={3} fontFamily="mono" fontSize="sm" color="brand.gray2">
-        <Text as="a" href={`tel:+${person.whatsapp}`} display="block" _hover={{ color: 'white' }}>{person.phone}</Text>
-        <Text as="a" href={`mailto:${person.email}`} display="block" _hover={{ color: 'white' }} wordBreak="break-all">{person.email}</Text>
-      </Box>
+      
       <Flex gap={2} mt={5} wrap="wrap">
         <Box {...btn} href={waLink(person.whatsapp)} bg="brand.white" color="brand.dark" borderColor="brand.white"
           _hover={{ bg: 'brand.greenBright', borderColor: 'brand.greenBright' }}>
@@ -144,7 +142,7 @@ export function Availability({ variant = 'card', ...rest }) {
         <Box position="relative" boxSize="10px">
           <Box position="absolute" inset={0} borderRadius="full" bg="brand.greenBright" />
           <Box position="absolute" inset="-4px" borderRadius="full" border="1px solid" borderColor="brand.greenBright" opacity={0.5}
-            sx={{ animation: 'fzPulse 2s ease-out infinite', '@keyframes fzPulse': { '0%': { transform: 'scale(0.6)', opacity: 0.8 }, '100%': { transform: 'scale(1.8)', opacity: 0 } } }} />
+             />
         </Box>
         <Eyebrow color="brand.greenBright">{a.title}</Eyebrow>
       </Flex>
@@ -171,20 +169,20 @@ export function Availability({ variant = 'card', ...rest }) {
 }
 
 // ── Redes (con estado "pendiente" hasta tener el link) ─────────
-export function SocialLinks({ size = 'md', ...rest }) {
+export function SocialLinks({ size = 'lg', ...rest }) {
   return (
     <Flex gap={3} wrap="wrap" {...rest}>
       {playerData.socialMedia.map((s) => {
         const ready = Boolean(s.url)
         return (
           <Flex key={s.label} as={ready ? 'a' : 'div'} href={s.url || undefined} target="_blank" rel="noopener noreferrer"
-            align="center" gap={3} border="1px solid" borderColor="whiteAlpha.300" borderRadius="12px"
-            px={size === 'sm' ? 3 : 4} py={size === 'sm' ? 2 : 3} opacity={ready ? 1 : 0.55}
+             align="center" gap={3} border="1px solid" borderColor="whiteAlpha.300" borderRadius="12px"
+            pr={size === 'sm' ? 4 : 8} pl={size === 'sm' ? 4 : 4} py={size === 'sm' ? 2 : 4} opacity={ready ? 1 : 0.55}
             transition="all 0.3s" _hover={ready ? { borderColor: 'white', bg: 'whiteAlpha.100' } : {}}>
-            <Box as={s.icon || FaInstagram} fontSize={size === 'sm' ? '16px' : '20px'} />
+            <Box as={s.icon || FaInstagram} fontSize={size === 'md' ? '16px' : '30px'} />
             <Box>
-              <Text fontFamily="mono" fontSize="9px" letterSpacing="0.2em" textTransform="uppercase" color="brand.gray">{s.label}</Text>
-              <Text fontFamily="heading" fontSize={size === 'sm' ? 'md' : 'lg'} lineHeight={1}>{s.handle}</Text>
+              <Text fontFamily="mono" fontSize="12px" letterSpacing="0.1em" textTransform="uppercase" color="brand.gray">{s.label}</Text>
+              <Text fontFamily="heading" fontSize={size === 'sm' ? 'md' : 'xl'} lineHeight={1}>{s.handle}</Text>
             </Box>
           </Flex>
         )
@@ -201,11 +199,20 @@ export function FooterBottom({ ...rest }) {
       <Text fontFamily="mono" fontSize="11px" letterSpacing="0.12em" textTransform="uppercase" color="brand.gray">
         © {new Date().getFullYear()} {playerData.displayName} · Todos los derechos reservados
       </Text>
-      <Text fontFamily="mono" fontSize="11px" color="brand.gray" letterSpacing="0.06em">
-        Desarrollo web ·{' '}
-        <Box as="a" href="https://matiasgunsett.netlify.app/" target="_blank" rel="noopener noreferrer" color="brand.white"
-          _hover={{ color: 'brand.greenBright' }} transition="color 0.3s">Matias Gunsett</Box>
-      </Text>
+      <Flex direction="column" fontSize="12px" color="rgba(255,255,255,0.3)" letterSpacing="0.05em"
+          textTransform="uppercase" fontFamily="'Barlow Condensed', sans-serif" >
+            Desarrollo Web
+            <Box width="95px" height="1px" color="rgba(255,255,255,0.3)"/>
+            <Link 
+            href="https://matiasgunsett.netlify.app/sportfolio" 
+            isExternal 
+            color="#2D5A47" 
+            _hover={{ borderColor: '#e8d5a370', color: '#e8d5a380' }}
+            transition="color 0.3s"
+            >
+             <Image src={sportfolio} alt="Sportfolio Web" display="block" width="85px" height="22px" mr="2px" ml="2px" pt="4px" />
+            </Link>
+        </Flex>
     </Flex>
   )
 }

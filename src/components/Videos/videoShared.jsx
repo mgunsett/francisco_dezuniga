@@ -116,10 +116,7 @@ function Cover({ visible, previewing, onPlay }) {
 
       <Flex position="absolute" inset={0} direction="column" justify="center"
         pl={{ base: 5, md: 10, lg: 16 }} pr="40%" gap={{ base: 1, lg: 2 }}>
-        <Flex align="center" gap={3}>
-          <Box w={{ base: '16px', lg: '26px' }} h="2px" bg="brand.greenBright" />
-          <Eyebrow color="brand.gray2" fontSize={{ base: '8px', md: '10px', lg: '12px' }}>Video · {hl.duration}</Eyebrow>
-        </Flex>
+        
         <Text fontFamily="heading" lineHeight={0.85} fontSize={{ base: '42px', sm: '64px', md: '96px', lg: '132px' }}>Highlights</Text>
         <Text fontFamily="heading" lineHeight={0.85} fontSize={{ base: '42px', sm: '64px', md: '96px', lg: '132px' }}
           color="transparent" sx={{ WebkitTextStroke: { base: '1px #fff', lg: '2px #fff' } }}>2026</Text>
@@ -185,11 +182,7 @@ export function HighlightPlayer({ player, radius = '16px', showChapters = true, 
         <Box ref={barRef} position="relative" h="16px" cursor="pointer" onClick={onBar} role="slider"
           aria-label="Línea de tiempo" aria-valuemin={0} aria-valuemax={Math.round(total)} aria-valuenow={Math.round(time)}>
           <Box position="absolute" left={0} right={0} top="7px" h="3px" bg="whiteAlpha.300" borderRadius="full" />
-          <Box position="absolute" left={0} top="7px" h="3px" bg="brand.white" borderRadius="full" w={`${(time / total) * 100}%`} />
-          {showChapters && hl.chapters.map((c) => (
-            <Box key={c.t} position="absolute" top="5px" h="7px" w="3px" borderRadius="1px" left={`${(c.t / total) * 100}%`}
-              bg={c.replay ? 'brand.greenBright' : 'brand.white'} />
-          ))}
+            <Box position="absolute" left={0} top="7px" h="3px" bg="brand.white" borderRadius="full" w={`${(time / total) * 100}%`} />
         </Box>
         <Flex align="center" gap={3} mt={1}>
           <Box as="button" type="button" onClick={toggle} aria-label={playing ? 'Pausa' : 'Reproducir'} color="white" display="flex">
