@@ -5,7 +5,6 @@ import Hero from './components/Hero/Hero'
 import StatsSection from './components/Stats/StatsSection'
 import VideosSection from './components/Videos/VideosSection'
 import GallerySection from './components/Gallery/GallerySection'
-import PressSection from './components/Press/PressSection'
 import ContactSection from './components/Contact/ContactSection'
 import Footer from './components/UI/Footer'
 import AdminPage from './pages/AdminPage'
@@ -19,7 +18,6 @@ function Landing() {
         <StatsSection />
         <VideosSection />
         <GallerySection />
-        <PressSection />
         <ContactSection />
         <Footer />
       </Box>
