@@ -3,6 +3,7 @@ import { Box, Text, Flex, Image, HStack, Grid } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import MatchBox from './MatchBox'
+import { HeroNumber } from './HeroNumber'
 import { playerData } from '../../data/playerData'
 import useMatches from '../../hooks/useMatches'
 
@@ -136,13 +137,13 @@ export default function Hero() {
             {/* IZQUIERDA — número + foto principal */}
             <Box position={{ base: 'absolute', lg: 'relative' }} inset={{ base: 0, lg: 'auto' }}
               w={{ lg: 'min(36vw, 500px)' }} flexShrink={0} h="100%" pointerEvents="none">
-              <Box position="absolute" zIndex={0}
-                left={{ base: '50%', lg: '45%' }} top={{ base: '9%', lg: '10%' }}
-                transform={{ base: 'translateX(-20%)', lg: 'translateX(-88%)' }}>
+              {/* Número detrás de la foto solo en mobile: en desktop forma parte de la ficha */}
+              <Box position="absolute" zIndex={0} display={{ base: 'block', lg: 'none' }}
+                left="70%" top="39%" transform="translateX(-20%)">
                 <Box className="hc-number-wrap">
-                  <Text className="hc-number" fontFamily="heading" lineHeight={0.8} color="transparent" opacity={0}
-                    fontSize={{ base: '44vh', md: '52vh', lg: '90vh' }}
-                    sx={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.43)' }}>
+                  <Text className="hc-number" fontFamily='emoji' lineHeight={0.8} color="transparent" opacity={0}
+                    fontSize={{ base: '44vh', md: '52vh' }}
+                    sx={{ WebkitTextStroke: '1.5px rgba(255, 255, 255, 0.43)' }} blur="6px" textShadow="0 0 2px rgba(255, 252, 252, 0.16)">
                     {playerData.number}
                   </Text>
                 </Box>
@@ -172,7 +173,11 @@ export default function Hero() {
               left={{ base: 'max(20px, 5%)', md: '8%', lg: 'auto' }} right={{ base: 'max(20px, 5%)', md: 'auto', lg: 'auto' }}
               bottom={{ base: 'max(28px, 5.5vh)', md: '7vh', lg: 'auto' }} maxW={{ md: '560px', lg: 'none' }}
               flex={{ lg: '0 0 auto' }} align="center" minW={0}>
-              <Flex className="hc-content" direction="column" gap={{ base: 'clamp(10px, 1.6vh, 16px)', lg: 5 }} w="100%">
+              <Flex className="hc-content" gap={{ lg: 8 }} w="100%">
+                {/* El estilo del número (fuente, relleno, trazo) se edita en HeroNumber.jsx */}
+                <HeroNumber value={playerData.number} display={{ base: 'none', lg: 'block' }} />
+
+                <Flex direction="column" gap={{ base: 'clamp(10px, 1.6vh, 16px)', lg: 5 }} flex={1} minW={0}>
 
                 <HStack className="hc-meta" spacing={3} opacity={0}>
                   <Image src={playerData.logoCurrentClub} alt="Escudo Deportivo Riestra" h={{ base: '32px', lg: '50px' }} />
@@ -180,10 +185,7 @@ export default function Hero() {
                     <Text fontFamily="heading" fontSize={{ base: 'lg', lg: '2xl' }} letterSpacing="wider" lineHeight={1}>
                       {playerData.currentClub}
                     </Text>
-                    <Text fontFamily="mono" fontSize={{ base: '10px', lg: 'xs' }} color="brand.gray"
-                      letterSpacing="widest" textTransform="uppercase">
-                      {playerData.currentDivision}
-                    </Text>
+                    
                   </Box>
                 </HStack>
 
@@ -213,7 +215,7 @@ export default function Hero() {
                     <Box key={s.label} className="hc-stat" opacity={0} borderLeft="1px solid" borderColor="whiteAlpha.300" pl={{ base: 2, lg: 3 }}>
                       <Text fontFamily="mono" fontSize={{ base: '9px', lg: '10px' }} color="brand.gray"
                         letterSpacing="widest" textTransform="uppercase">{s.label}</Text>
-                      <Text fontFamily="heading" fontSize={{ base: 'clamp(20px, 6.4vw, 26px)', md: '3xl', lg: '4xl' }} lineHeight={1} whiteSpace="nowrap"
+                      <Text fontFamily="heading" fontSize={{ base: 'clamp(20px, 6.4vw, 26px)', md: '3xl', lg: '2xl' }} lineHeight={1} whiteSpace="nowrap"
                         sx={{ fontVariantNumeric: 'tabular-nums' }}>
                         {s.text ?? (
                           <span className="hc-count" data-value={s.value} data-decimals={s.decimals} data-suffix={s.suffix}>
@@ -236,7 +238,7 @@ export default function Hero() {
                   </HStack>
                   <Text fontFamily="mono" fontWeight="700" fontSize={{ base: '10px', lg: 'xs' }}
                     letterSpacing="widest" textTransform="uppercase">
-                    Argentino - Polaco <Box as="span" color="brand.greenBright">· UE</Box>
+                    Argentino - Polaco <Box as="span" color="brand.greenBright"> (UE) </Box>
                   </Text>
                 </HStack>
 
@@ -260,6 +262,7 @@ export default function Hero() {
                     Contacto
                   </Box>
                 </Grid>
+                </Flex>
               </Flex>
             </Flex>
           </Flex>

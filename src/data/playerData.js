@@ -16,17 +16,6 @@ import logoTocalli from '@assets/academias/logo_tocalli.webp'
 import listaBuenaFe from '@assets/docs/lista_buena_fe_sudamericana.webp'
 
 import argentina from '@assets/argentina.webp'
-import universitario from '@assets/escudo_univ.webp'
-//Escudos trayectoria
-import escudoAtlParana from '@assets/escudos/escudo_atlparana.webp'
-import escudoNewells from '@assets/escudos/escudo_newells.webp'
-import escudoAlhali from '@assets/escudos/escudo_alhali.webp'
-import escudoCentralCordoba from '@assets/escudos/escudo_centralcordoba.webp'
-import escudoChaco from '@assets/escudos/escudo_chaco.webp'
-import escudoLigadequito from '@assets/escudos/escudo_ligadequito.webp'
-import escudoSanjose from '@assets/escudos/escudo_sanjose.webp'
-import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
-import escudoAucas from '@assets/escudos/escudo_aucas.webp'
 //Gallery
 import image1 from '@assets/gallery/image1.webp'
 import image2 from '@assets/gallery/image2.webp'
@@ -35,9 +24,7 @@ import image4 from '@assets/gallery/image4.webp'
 import image5 from '@assets/gallery/image5.webp'
 import image6 from '@assets/gallery/image6.webp'
 import image7 from '@assets/gallery/image7.webp'
-import image8 from '@assets/gallery/image8.webp'
-//Video
-import photoGraph from '@assets/perfil_video.webp'
+
 //Prensa
 import logo1 from '@assets/logos/logo1.webp'
 import logo2 from '@assets/logos/logo2.webp'
@@ -74,7 +61,7 @@ export const playerData = {
   birthDate: '20 / 03 / 2008',
   birthPlace: 'Buenos Aires, Argentina',
   currentClub: 'Deportivo Riestra',
-  currentDivision: 'Primera División · Liga Profesional AFA',
+  currentDivision: 'Liga Profesional AFA',
   logoCurrentClub: escudoRiestra,
   image: fotoHero,
   heroBg: fotoHeroBg,
@@ -100,7 +87,6 @@ export const playerData = {
     { label: 'Nacimiento',    value: '20 / 03 / 2008' },
     { label: 'Origen',        value: 'Buenos Aires, Argentina' },
     { label: 'Nacionalidad',  value: 'Argentina · Polonia (UE)' },
-    { label: 'Club actual',   value: 'Deportivo Riestra' },
   ],
 
   // Hitos reales del CV (reemplazan a "última temporada" mientras no haya números)
