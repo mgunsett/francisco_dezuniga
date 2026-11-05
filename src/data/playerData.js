@@ -30,14 +30,21 @@ import escudoSanjose from '@assets/escudos/escudo_sanjose.webp'
 import escudoUcatolica from '@assets/escudos/escudo_ucatolica.webp'
 import escudoAucas from '@assets/escudos/escudo_aucas.webp'
 //Gallery
-import image1 from '@assets/gallery/image1.webp'
-import image2 from '@assets/gallery/image2.webp'
-import image3 from '@assets/gallery/image3.webp'
-import image4 from '@assets/gallery/image4.webp'
-import image5 from '@assets/gallery/image5.webp'
-import image6 from '@assets/gallery/image6.webp'
-import image7 from '@assets/gallery/image7.webp'
-import image8 from '@assets/gallery/image8.webp'
+import fz01 from '@assets/gallery/fz01.webp'
+import fz02 from '@assets/gallery/fz02.webp'
+import fz03 from '@assets/gallery/fz03.webp'
+import fz04 from '@assets/gallery/fz04.webp'
+import fz05 from '@assets/gallery/fz05.webp'
+import fz06 from '@assets/gallery/fz06.webp'
+import fz07 from '@assets/gallery/fz07.webp'
+import fz08 from '@assets/gallery/fz08.webp'
+import fz09 from '@assets/gallery/fz09.webp'
+import fz10 from '@assets/gallery/fz10.webp'
+import fz11 from '@assets/gallery/fz11.webp'
+import fz12 from '@assets/gallery/fz12.webp'
+import fz13 from '@assets/gallery/fz13.webp'
+import fz14 from '@assets/gallery/fz14.webp'
+import fz15 from '@assets/gallery/fz15.webp'
 //Video
 import photoGraph from '@assets/perfil_video.webp'
 //Prensa
@@ -214,13 +221,21 @@ export const playerData = {
   ],
 
   gallery: [
-    { id: 1, src: image1, alt: 'Francisco Fydriszewski', caption: 'Liga Profesional 2024', category: 'Partido', aspect: 'wide' },
-    { id: 2, src: image2, alt: 'Francisco Fydriszewski', caption: 'Festejo ante Racing',    category: 'Festejo', aspect: 'tall' },
-    { id: 3, src: image3, alt: 'Francisco Fydriszewski', caption: 'Pretemporada 2025',       category: 'Entrenamiento', aspect: 'square' },
-    { id: 4, src: image4, alt: 'Francisco Fydriszewski', caption: 'Copa Argentina 2024',     category: 'Partido', aspect: 'wide' },
-    { id: 5, src: image5, alt: 'Francisco Fydriszewski', caption: 'Plantel Talleres 2024',   category: 'Equipo',  aspect: 'wide' },
-    { id: 6, src: image6, alt: 'Francisco Fydriszewski', caption: 'Foto oficial 2024',       category: 'Retrato', aspect: 'tall' },
-    { id: 7, src: image7, alt: 'Francisco Fydriszewski', caption: 'Liga Profesional 2025', category: 'Partido', aspect: 'wide' },
+    { id: 1, src: fz01, alt: 'Francisco de Zúñiga · Antes del partido', caption: 'Antes del partido', category: 'Previa', aspect: 'tall' },
+    { id: 2, src: fz02, alt: 'Francisco de Zúñiga · Concentración', caption: 'Concentración', category: 'Partido', aspect: 'tall' },
+    { id: 3, src: fz03, alt: 'Francisco de Zúñiga · Achique en el mano a mano', caption: 'Achique en el mano a mano', category: 'Atajadas', aspect: 'tall' },
+    { id: 4, src: fz04, alt: 'Francisco de Zúñiga · Camino al arco', caption: 'Camino al arco', category: 'Partido', aspect: 'tall' },
+    { id: 5, src: fz05, alt: 'Francisco de Zúñiga · Estirada', caption: 'Estirada', category: 'Atajadas', aspect: 'wide' },
+    { id: 6, src: fz06, alt: 'Francisco de Zúñiga · Al piso', caption: 'Al piso', category: 'Atajadas', aspect: 'tall' },
+    { id: 7, src: fz07, alt: 'Francisco de Zúñiga · Trabajo de arqueros', caption: 'Trabajo de arqueros', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 8, src: fz08, alt: 'Francisco de Zúñiga · Saque largo', caption: 'Saque largo', category: 'Partido', aspect: 'tall' },
+    { id: 9, src: fz09, alt: 'Francisco de Zúñiga · Saque de arco', caption: 'Saque de arco', category: 'Partido', aspect: 'tall' },
+    { id: 10, src: fz10, alt: 'Francisco de Zúñiga · Práctica', caption: 'Práctica', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 11, src: fz11, alt: 'Francisco de Zúñiga · Reflejos', caption: 'Reflejos', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 12, src: fz12, alt: 'Francisco de Zúñiga · Entrenamiento', caption: 'Entrenamiento', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 13, src: fz13, alt: 'Francisco de Zúñiga · Ordenando la defensa', caption: 'Ordenando la defensa', category: 'Partido', aspect: 'tall' },
+    { id: 14, src: fz14, alt: 'Francisco de Zúñiga · Juego con los pies', caption: 'Juego con los pies', category: 'Partido', aspect: 'tall' },
+    { id: 15, src: fz15, alt: 'Francisco de Zúñiga · El 1', caption: 'El 1', category: 'Partido', aspect: 'tall' },
   ],
 
   socialMedia: [
