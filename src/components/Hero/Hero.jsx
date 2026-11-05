@@ -3,6 +3,7 @@ import { Box, Text, Flex, Image, HStack, Grid } from '@chakra-ui/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import MatchBox from './MatchBox'
+import HeroMobile from './HeroMobile'
 import { HeroNumber } from './HeroNumber'
 import { playerData } from '../../data/playerData'
 import useMatches from '../../hooks/useMatches'
@@ -131,12 +132,15 @@ export default function Hero() {
           left={{ base: '-28%', md: '-8%', lg: '2%' }} top={{ base: '9%', lg: '10%' }} h={{ base: '30vh', md: '40vh', lg: '56vh' }}
           filter="grayscale(1) contrast(1.2) brightness(0.9) blur(0.5px)" />
         <Image className="hc-bg hc-bg-1" src={playerData.heroBg} alt="" aria-hidden draggable={false}
-          position="absolute" zIndex={1} objectFit="contain" opacity={0}
+          display={{ base: 'none', lg: 'block' }} position="absolute" zIndex={1} objectFit="contain" opacity={0}
           right={{ base: '-34%', md: '-10%', lg: '4%' }} bottom={{ base: '46%', md: '42%', lg: '-6%' }} h={{ base: '28vh', md: '38vh', lg: '68vh' }}
           filter="grayscale(1) contrast(1.2) brightness(0.9) blur(1px)" />
 
+        {/* Celular: composición propia (HeroMobile.jsx) */}
+        <HeroMobile go={scrollTo} />
+
         {/* Composición centrada (desktop): número + ficha | foto */}
-        <Flex position="absolute" inset={0} justify="center" zIndex={3}>
+        <Flex position="absolute" inset={0} justify="center" zIndex={3} display={{ base: 'none', lg: 'flex' }}>
           <Flex w={{ base: '100%', lg: 'auto' }} h="100%"
             direction={{ lg: 'row-reverse' }} align={{ lg: 'stretch' }} >
 
@@ -277,10 +281,10 @@ export default function Hero() {
 
         {/* Panel colapsado de resultados (último / próximo partido) */}
         <Box className="hc-match" opacity={0} position="absolute" right={0} zIndex={12}
-          top={{ base: '15%', lg: '22%' }}
+          top={{ base: '40%', lg: '22%' }}
           sx={{
             '@media (max-width: 991px)': { '& > div > button': { minHeight: '180px', py: 4, px: 2.5 } },
-            '@media (max-width: 991px) and (max-height: 700px)': { top: '12%', '& > div > button': { minHeight: '140px', py: 3, gap: 2 } },
+            '@media (max-width: 991px) and (max-height: 700px)': { top: '38%', '& > div > button': { minHeight: '140px', py: 3, gap: 2 } },
           }}>
           <MatchBox last={matches.last} next={matches.next} variant="card" />
         </Box>
