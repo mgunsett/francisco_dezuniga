@@ -210,7 +210,8 @@ export default function Hero() {
                   </HStack>
                   <Box as="h1" fontFamily="heading" lineHeight={0.86}
                     sx={{ transformStyle: 'preserve-3d' }}>
-                      <Box display="block" overflow="hidden" pt="0.12em" mt="-0.12em" color="transparent"
+                      {/* pt: lugar para la Ú y la Ñ, que el overflow recortaría */}
+                      <Box display="block" overflow="hidden" pt="0.2em" mt="-0.12em" color="transparent"
                       sx={{ WebkitTextStroke: { base: '1.5px #fff', lg: `${u(0.22)} #fff` } }} fontSize={{ base: 'min(21vw, 11vh)', md: '14vw', lg: u(18.4) }}>
                       <Chars text={playerData.fullName} />
                     </Box>

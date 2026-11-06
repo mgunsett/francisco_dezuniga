@@ -1,11 +1,3 @@
-// ─────────────────────────────────────────────────────────────
-// HERO MOBILE (< 992px). El escritorio no cambia.
-// La foto es la protagonista y el nombre va por detrás. Los datos
-// largos (grilla de stats, pasaporte) se resumen en una sola línea.
-// Usa las mismas clases que anima la intro de Hero.jsx
-// (hc-photo, hc-char, hc-meta, hc-badge, hc-cta, hc-number).
-// Diseño elegido: nombre en vertical detrás de la foto.
-// ─────────────────────────────────────────────────────────────
 import { Box, Flex, Grid, Image, Text } from '@chakra-ui/react'
 import { playerData } from '../../data/playerData'
 import { useT } from '../../i18n'
@@ -92,13 +84,14 @@ export default function HeroMobile({ go }) {
   const t = useT()
   return (
     <Box position="absolute" inset={0} display={{ base: 'block', lg: 'none' }} zIndex={3} overflow="hidden">
-      <Box className="hc-content" position="absolute" zIndex={1} left="3%" top="calc(64px + 2dvh)" bottom="calc(150px + 5dvh)" as="h1"
+      <Box className="hc-content" position="absolute" zIndex={1} left="1%" top="calc(64px + 2dvh)" bottom="calc(150px + 5dvh)" as="h1"
         display="flex" flexDirection="column" justifyContent="flex-start" fontFamily="heading" lineHeight={0.84} fontSize="min(15dvh, 30vw)" whiteSpace="nowrap"
         sx={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
+        {/* paddingBlockStart: reserva lugar para Ú y Ñ, que el overflow recortaría (en vertical, pt no sirve) */}
+        <Box overflow="hidden" sx={{ ...outline('1.5px', 'rgba(255,255,255,0.8)'), paddingBlockStart: '0.2em' }}><Chars text={playerData.fullName} /></Box>
         <Box overflow="hidden" color="rgba(255,255,255,0.92)"><Chars text={playerData.name} /></Box>
-        <Box overflow="hidden" sx={outline('1.5px', 'rgba(255,255,255,0.8)')}><Chars text={playerData.fullName} /></Box>
       </Box>
-      <Photo h="min(74dvh, 176vw)" bottom="calc(140px + 4dvh)" left="58%" x="-50%" fade={80} />
+      <Photo h="min(74dvh, 166vw)" bottom="calc(100px + 4dvh)" left="64%" x="-50%" fade={80} />
       {bottomFade('38%', 46)}
       <Flex position="absolute" left="5%" right="5%" bottom="max(22px, 3.5dvh)" zIndex={4} direction="column" gap="1.6dvh">
         <ClubLine t={t} />

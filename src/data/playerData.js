@@ -49,7 +49,7 @@ export const playerData = {
   nationality: 'Argentina',
   nationalityFlag: argentina,
   // Pasaporte comunitario: dato clave para clubes europeos
-  secondNationality: 'Polonia',
+  secondNationality: 'Polaca',
   secondNationalityFlag: polonia,
   euPassport: true,
   age: 18,
@@ -86,15 +86,15 @@ export const playerData = {
     { label: 'Edad',          value: '18 años' },
     { label: 'Nacimiento',    value: '20 / 03 / 2008' },
     { label: 'Origen',        value: 'Buenos Aires, Argentina' },
-    { label: 'Nacionalidad',  value: 'Argentina · Polonia (UE)' },
+    { label: 'Nacionalidad',  value: 'Argentina · Polaca (UE)' },
   ],
 
   // Hitos reales del CV (reemplazan a "última temporada" mientras no haya números)
   milestones: [
-    { year: '2026', title: 'Plantel de Primera División', detail: 'Arquero de Primera · Liga Profesional AFA' },
-    { year: '2026', title: 'Titular en Proyección',       detail: 'Categoría Proyección · Liga Profesional AFA' },
-    { year: '2026', title: 'Convocado a la CONMEBOL Sudamericana', detail: 'Lista de buena fe del club' },
-    { year: '2025', title: 'Titular en 6ta división',     detail: 'Citado a entrenar con Reserva y Primera' },
+    { year: '2026', title: 'Plantel de Primera División'},
+    { year: '2026', title: 'Titular en Proyección'},
+    { year: '2026', title: 'Convocado a la CONMEBOL Sudamericana'},
+    { year: '2025', title: 'Titular en 5ta división'},
   ],
 
   // Recorte del jugador (fondo transparente) usado en Estadísticas
@@ -107,7 +107,7 @@ export const playerData = {
     competition: 'CONMEBOL Sudamericana 2026',
     club: 'Deportivo Riestra',
     dorsal: 44,
-    // Recuadro de su línea ("44. Francisco DE ZUÑIGA") en px sobre la imagen original
+    // Recuadro de su línea ("44. Francisco DE ZÚÑIGA") en px sobre la imagen original
     size: { w: 1024, h: 1280 },
     highlight: { x: 506, y: 858, w: 392, h: 46 },
   },
@@ -174,21 +174,21 @@ export const playerData = {
   ],
 
   gallery: [
-    { id: 1, src: fz01, alt: 'Francisco de Zúñiga · Antes del partido', caption: 'Antes del partido', category: 'Previa', aspect: 'tall' },
-    { id: 2, src: fz02, alt: 'Francisco de Zúñiga · Concentración', caption: 'Concentración', category: 'Partido', aspect: 'tall' },
-    { id: 3, src: fz03, alt: 'Francisco de Zúñiga · Achique en el mano a mano', caption: 'Achique en el mano a mano', category: 'Atajadas', aspect: 'tall' },
-    { id: 4, src: fz04, alt: 'Francisco de Zúñiga · Camino al arco', caption: 'Camino al arco', category: 'Partido', aspect: 'tall' },
-    { id: 5, src: fz05, alt: 'Francisco de Zúñiga · Estirada', caption: 'Estirada', category: 'Atajadas', aspect: 'wide' },
-    { id: 6, src: fz06, alt: 'Francisco de Zúñiga · Al piso', caption: 'Al piso', category: 'Atajadas', aspect: 'tall' },
-    { id: 7, src: fz07, alt: 'Francisco de Zúñiga · Trabajo de arqueros', caption: 'Trabajo de arqueros', category: 'Entrenamiento', aspect: 'tall' },
-    { id: 8, src: fz08, alt: 'Francisco de Zúñiga · Saque largo', caption: 'Saque largo', category: 'Partido', aspect: 'tall' },
-    { id: 9, src: fz09, alt: 'Francisco de Zúñiga · Saque de arco', caption: 'Saque de arco', category: 'Partido', aspect: 'tall' },
-    { id: 10, src: fz10, alt: 'Francisco de Zúñiga · Práctica', caption: 'Práctica', category: 'Entrenamiento', aspect: 'tall' },
-    { id: 11, src: fz11, alt: 'Francisco de Zúñiga · Reflejos', caption: 'Reflejos', category: 'Entrenamiento', aspect: 'tall' },
-    { id: 12, src: fz12, alt: 'Francisco de Zúñiga · Entrenamiento', caption: 'Entrenamiento', category: 'Entrenamiento', aspect: 'tall' },
-    { id: 13, src: fz13, alt: 'Francisco de Zúñiga · Ordenando la defensa', caption: 'Ordenando la defensa', category: 'Partido', aspect: 'tall' },
-    { id: 14, src: fz14, alt: 'Francisco de Zúñiga · Juego con los pies', caption: 'Juego con los pies', category: 'Partido', aspect: 'tall' },
-    { id: 15, src: fz15, alt: 'Francisco de Zúñiga · El 1', caption: 'El 1', category: 'Partido', aspect: 'tall' },
+    { id: 1, src: fz01, alt: 'Francisco de Zúñiga · Antes del partido',category: 'Previa', aspect: 'tall' },
+    { id: 2, src: fz02, alt: 'Francisco de Zúñiga · Concentración',category: 'Partido', aspect: 'tall' },
+    { id: 3, src: fz03, alt: 'Francisco de Zúñiga · Achique en el mano a mano', category: 'Atajadas', aspect: 'tall' },
+    { id: 4, src: fz04, alt: 'Francisco de Zúñiga · Camino al arco', category: 'Partido', aspect: 'tall' },
+    { id: 5, src: fz05, alt: 'Francisco de Zúñiga · Estirada', category: 'Atajadas', aspect: 'wide' },
+    { id: 6, src: fz06, alt: 'Francisco de Zúñiga · Al piso', category: 'Atajadas', aspect: 'tall' },
+    { id: 7, src: fz07, alt: 'Francisco de Zúñiga · Trabajo de arqueros', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 8, src: fz08, alt: 'Francisco de Zúñiga · Saque largo', category: 'Partido', aspect: 'tall' },
+    { id: 9, src: fz09, alt: 'Francisco de Zúñiga · Saque de arco', category: 'Partido', aspect: 'tall' },
+    { id: 10, src: fz10, alt: 'Francisco de Zúñiga · Práctica', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 11, src: fz11, alt: 'Francisco de Zúñiga · Reflejos', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 12, src: fz12, alt: 'Francisco de Zúñiga · Entrenamiento', category: 'Entrenamiento', aspect: 'tall' },
+    { id: 13, src: fz13, alt: 'Francisco de Zúñiga · Ordenando la defensa', category: 'Partido', aspect: 'tall' },
+    { id: 14, src: fz14, alt: 'Francisco de Zúñiga · Juego con los pies', category: 'Partido', aspect: 'tall' },
+    { id: 15, src: fz15, alt: 'Francisco de Zúñiga · El 1', category: 'Partido', aspect: 'tall' },
   ],
 
   // Redes (url: null = se muestra como pendiente)

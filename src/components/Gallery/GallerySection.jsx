@@ -77,7 +77,7 @@ export default function GallerySection() {
                   transform={{ base: 'none', lg: 'translateY(10px)' }} _groupHover={{ opacity: 1, transform: 'none' }}
                   transition="all 0.4s cubic-bezier(0.22,1,0.36,1)">
                   <Eyebrow color="brand.greenBright" fontSize="9px">{p.category}</Eyebrow>
-                  <Text fontFamily="heading" fontSize={{ base: 'md', lg: 'xl' }} lineHeight={1}>{t(p.caption)}</Text>
+             
                 </Box>
                 <Flex position="absolute" top={3} right={3} boxSize="32px" borderRadius="full" bg="rgba(0,0,0,0.5)"
                   border="1px solid" borderColor="whiteAlpha.400" align="center" justify="center" opacity={0}

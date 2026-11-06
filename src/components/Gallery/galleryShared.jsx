@@ -1,6 +1,6 @@
 // Piezas compartidas de la Galería: encabezado y visor de fotos.
 import { useEffect, useRef } from 'react'
-import { Box, Flex, Text, Image } from '@chakra-ui/react'
+import { Box, Flex, Text, Image, Portal } from '@chakra-ui/react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { useT } from '../../i18n'
@@ -49,6 +49,8 @@ export function Lightbox({ photos, index, onClose, onIndex }) {
     bg: 'rgba(0,0,0,0.4)', _hover: { bg: 'brand.white', color: 'brand.dark' }, transition: 'all 0.25s',
   }
   return (
+    // Portal: la sección vive en un contenedor con z-index propio que dejaría al visor debajo del navbar
+    <Portal>
     <AnimatePresence>
       {open && (
         <MotionBox position="fixed" inset={0} zIndex={2000} bg="rgba(5,6,5,0.95)" backdropFilter="blur(10px)"
@@ -64,8 +66,7 @@ export function Lightbox({ photos, index, onClose, onIndex }) {
                 borderRadius="10px" mx="auto" draggable={false} />
               <Flex justify="center" align="center" gap={3} mt={4}>
                 <Eyebrow color="brand.greenBright">{photo.category}</Eyebrow>
-                <Box w="4px" h="4px" borderRadius="full" bg="whiteAlpha.500" />
-                <Text fontFamily="heading" fontSize="xl" lineHeight={1}>{t(photo.caption)}</Text>
+                
               </Flex>
             </MotionBox>
           </AnimatePresence>
@@ -85,5 +86,6 @@ export function Lightbox({ photos, index, onClose, onIndex }) {
         </MotionBox>
       )}
     </AnimatePresence>
+    </Portal>
   )
 }
